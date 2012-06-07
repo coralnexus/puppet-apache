@@ -31,6 +31,9 @@ class apache::params {
   $options       = 'Indexes FollowSymLinks MultiViews'
   $vhost_name    = '*'
 
+  $http_port     = 80
+  $https_port    = 443
+
   case $::operatingsystem {
     'centos', 'redhat', 'fedora', 'scientific': {
       $apache_name = 'httpd'
@@ -39,7 +42,7 @@ class apache::params {
       $mod_wsgi_package = 'mod_wsgi'
       $ssl_package = 'mod_ssl'
       $apache_dev  = 'httpd-devel'
-      $vdir = '/etc/httpd/conf.d/'
+      $apache_vdir = '/etc/httpd/conf.d/'
     }
     'ubuntu', 'debian': {
       $apache_name = 'apache2'
@@ -48,7 +51,13 @@ class apache::params {
       $mod_wsgi_package = 'libapache2-mod-wsgi'
       $ssl_package = 'apache-ssl'
       $apache_dev  = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
-      $vdir = '/etc/apache2/sites-enabled/'
+
+      $apache_etc  = '/etc/apache2/'
+      $apache_vdir = "${apache_etc}sites-enabled/"
+
+      $apache_config = "${apache_etc}apache2.conf"
+      $apache_ports  = "${apache_etc}ports.conf"
+      $apache_vars   = "${apache_etc}envvars"
     }
     default: {
       $apache_name = 'apache2'
@@ -57,7 +66,7 @@ class apache::params {
       $mod_wsgi_package = 'libapache2-mod-wsgi'
       $ssl_package = 'apache-ssl'
       $apache_dev  = 'apache-dev'
-      $vdir = '/etc/apache2/sites-enabled/'
+      $apache_vdir = '/etc/apache2/sites-enabled/'
     }
   }
 }

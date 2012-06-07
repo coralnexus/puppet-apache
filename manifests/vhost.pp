@@ -77,11 +77,11 @@ define apache::vhost(
   }
 
   if $configure_firewall {
-    if ! defined(Firewall["0100-INPUT ACCEPT $port"]) {
+    if ! defined(Firewall["0500 INPUT Accept Apache connection: $port"]) {
       @firewall {
-        "0100-INPUT ACCEPT $port":
+        "0500 INPUT Accept Apache connection: $port":
           action => 'accept',
-          dport  => '$port',
+          dport  => $port,
           proto  => 'tcp'
       }
     }
