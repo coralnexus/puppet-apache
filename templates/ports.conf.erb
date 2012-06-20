@@ -1,12 +1,7 @@
+# ************************************
+# Default template in module puppet-apache
+# Managed by Puppet
+# ************************************
 
 NameVirtualHost *:<%= http_port %>
 Listen <%= http_port %>
-
-<IfModule mod_ssl.c>
-    Listen <%= https_port %>
-</IfModule>
-
-<IfModule mod_gnutls.c>
-    Listen <%= https_port %>
-</IfModule>
-

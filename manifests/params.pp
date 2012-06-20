@@ -19,54 +19,63 @@
 #
 class apache::params {
 
-  $user          = 'www-data'
-  $group         = 'www-data'
-  $ssl           = true
-  $template      = 'apache/vhost-default.conf.erb'
-  $priority      = '25'
-  $servername    = ''
-  $serveraliases = ''
-  $auth          = false
-  $redirect_ssl  = false
-  $options       = 'Indexes FollowSymLinks MultiViews'
-  $vhost_name    = '*'
+  $user           = 'www-data'
+  $group          = 'www-data'
 
-  $http_port     = 80
-  $https_port    = 443
+  $http_port      = 80
+
+  $use_ssl        = false
+  $https_port     = 443
+
+  $http_template  = 'apache/vhost-http.conf.erb'
+  $https_template = 'apache/vhost-https.conf.erb'
+  $priority       = '25'
+
+  $options        = 'Indexes FollowSymLinks MultiViews'
+  $vhost_ip       = '*'
+
+  $web_home       = '/var/www'
 
   case $::operatingsystem {
     'centos', 'redhat', 'fedora', 'scientific': {
-      $apache_name = 'httpd'
-      $php_package = 'php'
+      $apache_name        = 'httpd'
+      $php_package        = 'php'
       $mod_python_package = 'mod_python'
-      $mod_wsgi_package = 'mod_wsgi'
-      $ssl_package = 'mod_ssl'
-      $apache_dev  = 'httpd-devel'
-      $apache_vdir = '/etc/httpd/conf.d/'
+      $mod_wsgi_package   = 'mod_wsgi'
+      $ssl_package        = 'mod_ssl'
+      $apache_dev         = 'httpd-devel'
+
+      $apache_vdir        = '/etc/httpd/conf.d'
+      $apache_ports_dir   = $apache_vdir
+      $apache_log_dir     = '/var/log/httpd'
     }
     'ubuntu', 'debian': {
-      $apache_name = 'apache2'
-      $php_package = 'libapache2-mod-php5'
+      $apache_name        = 'apache2'
+      $php_package        = 'libapache2-mod-php5'
       $mod_python_package = 'libapache2-mod-python'
-      $mod_wsgi_package = 'libapache2-mod-wsgi'
-      $ssl_package = 'apache-ssl'
-      $apache_dev  = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
+      $mod_wsgi_package   = 'libapache2-mod-wsgi'
+      $ssl_package        = 'apache-ssl'
+      $apache_dev         = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
 
-      $apache_etc  = '/etc/apache2/'
-      $apache_vdir = "${apache_etc}sites-enabled/"
-
-      $apache_config = "${apache_etc}apache2.conf"
-      $apache_ports  = "${apache_etc}ports.conf"
-      $apache_vars   = "${apache_etc}envvars"
+      $apache_etc         = '/etc/apache2'
+      $apache_vdir        = "${apache_etc}/sites-enabled"
+      $apache_config      = "${apache_etc}/apache2.conf"
+      $apache_ports_dir   = "${apache_etc}/conf.d"
+      $apache_vars        = "${apache_etc}/envvars"
+      $apache_log_dir     = '/var/log/apache2'
     }
     default: {
-      $apache_name = 'apache2'
-      $php_package = 'libapache2-mod-php5'
+      $apache_name        = 'apache2'
+      $php_package        = 'libapache2-mod-php5'
       $mod_python_package = 'libapache2-mod-python'
-      $mod_wsgi_package = 'libapache2-mod-wsgi'
-      $ssl_package = 'apache-ssl'
-      $apache_dev  = 'apache-dev'
-      $apache_vdir = '/etc/apache2/sites-enabled/'
+      $mod_wsgi_package   = 'libapache2-mod-wsgi'
+      $ssl_package        = 'apache-ssl'
+      $apache_dev         = 'apache-dev'
+
+      $apache_etc         = '/etc/apache2'
+      $apache_vdir        = "${apache_etc}/sites-enabled"
+      $apache_ports_dir   = "${apache_etc}/conf.d"
+      $apache_log_dir     = '/var/log/apache2'
     }
   }
 }
