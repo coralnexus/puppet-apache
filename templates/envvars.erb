@@ -15,23 +15,19 @@ fi
 # /etc/init.d/apache2, /etc/logrotate.d/apache2, etc.
 export APACHE_RUN_USER=<%= user %>
 export APACHE_RUN_GROUP=<%= group %>
-export APACHE_PID_FILE=/var/run/apache2$SUFFIX.pid
-export APACHE_RUN_DIR=/var/run/apache2$SUFFIX
-export APACHE_LOCK_DIR=/var/lock/apache2$SUFFIX
+export APACHE_PID_FILE=<%= run_dir -%>$SUFFIX.pid
+export APACHE_RUN_DIR=<%= run_dir -%>$SUFFIX
+export APACHE_LOCK_DIR=<%= lock_dir -%>$SUFFIX
 # Only /var/log/apache2 is handled by /etc/logrotate.d/apache2.
-export APACHE_LOG_DIR=/var/log/apache2$SUFFIX
+export APACHE_LOG_DIR=<%= log_dir -%>$SUFFIX
 
-## The locale used by some modules like mod_dav
-export LANG=C
-## Uncomment the following line to use the system default locale instead:
-#. /etc/default/locale
-
+<% if locale -%>
+export LANG='<%= locale %>'
+<% else -%>
+. /etc/default/locale
 export LANG
-
-## The command to get the status for 'apache2ctl status'.
-## Some packages providing 'www-browser' need '--dump' instead of '-dump'.
-#export APACHE_LYNX='www-browser -dump'
+<% end -%>
 
 ## If you need a higher file descriptor limit, uncomment and adjust the
 ## following line (default is 8192):
-#APACHE_ULIMIT_MAX_FILES='ulimit -n 65536'
+APACHE_ULIMIT_MAX_FILES='ulimit -n <%= ulimit_max_files -%>'

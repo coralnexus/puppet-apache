@@ -1,11 +1,16 @@
 # Class: apache
 #
-# This class installs Apache
+# This class installs, configures, and manages Apache
+#
+# Supports Hiera
 #
 # Parameters:
 #
+#  See <examples/params.json> for Hiera keys.
+#
 # Actions:
 #   - Install Apache
+#   - Configure Apache
 #   - Manage Apache service
 #
 # Requires:
@@ -14,73 +19,117 @@
 #
 class apache (
 
-  $user  = $apache::params::user,
-  $group = $apache::params::group,
+  $ensure                             = $apache::params::apache_ensure,
+  $package                            = $apache::params::os_apache_package,
+  $use_dev                            = $apache::params::use_dev,
+  $dev_ensure                         = $apache::params::apache_dev_ensure,
+  $dev_package                        = $apache::params::os_apache_dev_package,
+  $config_file                        = $apache::params::os_apache_config_file,
+  $vars_file                          = $apache::params::os_apache_vars_file,
+  $vhost_dir                          = $apache::params::os_apache_vhost_dir,
+  $conf_dir                           = $apache::params::os_apache_conf_dir,
+  $log_dir                            = $apache::params::os_apache_log_dir,
+  $run_dir                            = $apache::params::os_apache_run_dir,
+  $lock_dir                           = $apache::params::os_apache_lock_dir,
+  $user                               = $apache::params::user,
+  $group                              = $apache::params::group,
+  $locale                             = $apache::params::locale,
+  $access_file                        = $apache::params::access_file,
+  $timeout                            = $apache::params::timeout,
+  $keepalive                          = $apache::params::keepalive,
+  $max_keepalive_requests             = $apache::params::max_keepalive_requests,
+  $keepalive_timeout                  = $apache::params::keepalive_timeout,
+  $mpm_prefork_start_servers          = $apache::params::mpm_prefork_start_servers,
+  $mpm_prefork_min_spare_servers      = $apache::params::mpm_prefork_min_spare_servers,
+  $mpm_prefork_max_spare_servers      = $apache::params::mpm_prefork_max_spare_servers,
+  $mpm_prefork_max_clients            = $apache::params::mpm_prefork_max_clients,
+  $mpm_prefork_max_requests_per_child = $apache::params::mpm_prefork_max_requests_per_child,
+  $mpm_worker_start_servers           = $apache::params::mpm_worker_start_servers,
+  $mpm_worker_min_spare_threads       = $apache::params::mpm_worker_min_spare_threads,
+  $mpm_worker_max_spare_threads       = $apache::params::mpm_worker_max_spare_threads,
+  $mpm_worker_thread_limit            = $apache::params::mpm_worker_thread_limit,
+  $mpm_worker_threads_per_child       = $apache::params::mpm_worker_threads_per_child,
+  $mpm_worker_max_clients             = $apache::params::mpm_worker_max_clients,
+  $mpm_worker_max_requests_per_child  = $apache::params::mpm_worker_max_requests_per_child,
+  $mpm_event_start_servers            = $apache::params::mpm_event_start_servers,
+  $mpm_event_min_spare_threads        = $apache::params::mpm_event_min_spare_threads,
+  $mpm_event_max_spare_threads        = $apache::params::mpm_event_max_spare_threads,
+  $mpm_event_thread_limit             = $apache::params::mpm_event_thread_limit,
+  $mpm_event_threads_per_child        = $apache::params::mpm_event_threads_per_child,
+  $mpm_event_max_clients              = $apache::params::mpm_event_max_clients,
+  $mpm_event_max_requests_per_child   = $apache::params::mpm_event_max_requests_per_child,
+  $ulimit_max_files                   = $apache::params::ulimit_max_files,
+  $restricted_files                   = $apache::params::restricted_files,
+  $default_type                       = $apache::params::default_type,
+  $log_formats                        = $apache::params::log_formats,
+  $config_template                    = $apache::params::config_template,
+  $vars_template                      = $apache::params::vars_template,
 
 ) inherits apache::params {
 
   #-----------------------------------------------------------------------------
+  # Installation
 
   package { 'apache':
-    ensure => 'installed',
-    name   => $apache::params::apache_name,
+    name   => $package,
+    ensure => $ensure,
+  }
+
+  if $use_dev {
+    package { 'apache_dev_package':
+      name   => $dev_package,
+      ensure => $dev_ensure,
+    }
   }
 
   #-----------------------------------------------------------------------------
+  # Configuration
 
-  file { 'apache_vdir':
-    ensure  => 'directory',
-    path    => $apache::params::apache_vdir,
+  file { 'apache_vhost_dir':
+    path    => $vhost_dir,
+    ensure  => directory,
     recurse => true,
     purge   => true,
-    notify  => Service['apache'],
     require => Package['apache'],
+    notify  => Service['apache'],
   }
 
-  if $apache::params::apache_config {
-    file { 'apache_config':
-      path      => $apache::params::apache_config,
-      owner     => 'root',
-      group     => 'root',
-      mode      => 644,
-      content   => template('apache/apache2.conf.erb'),
-      require   => Package['apache'],
+  if $config_file {
+    file { 'apache_config_file':
+      path    => $config_file,
+      ensure  => present,
+      content => template($config_template),
+      require => Package['apache'],
+      notify  => Service['apache'],
     }
   }
 
-  if $apache::params::apache_ports_dir {
-    file { 'apache_ports':
-      path      => $apache::params::apache_ports_dir,
-      ensure    => 'directory',
-      owner     => 'root',
-      group     => 'root',
-      mode      => 755,
+  if $conf_dir {
+    file { 'apache_conf_dir':
+      path      => $conf_dir,
+      ensure    => directory,
       require   => Package['apache'],
+      notify    => Service['apache'],
     }
   }
 
-  if $apache::params::apache_vars {
-    file { 'apache_vars':
-      path      => $apache::params::apache_vars,
-      owner     => 'root',
-      group     => 'root',
-      mode      => 644,
-      content   => template('apache/envvars.erb'),
+  if $vars_file {
+    file { 'apache_vars_file':
+      path      => $vars_file,
+      ensure    => present,
+      content   => template($vars_template),
       require   => Package['apache'],
+      notify    => Service['apache'],
     }
   }
 
   #-----------------------------------------------------------------------------
+  # Service
 
   service { 'apache':
-    ensure    => running,
-    name      => $apache::params::apache_name,
-    enable    => true,
-    subscribe => [
-      Package['apache'],
-      File['apache_config'],
-      File['apache_ports'],
-      File['apache_vars'],
-    ],
+    name    => $package,
+    ensure  => running,
+    enable  => true,
+    require => Package['apache'],
   }
 }

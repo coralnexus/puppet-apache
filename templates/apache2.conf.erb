@@ -64,26 +64,26 @@ PidFile ${APACHE_PID_FILE}
 #
 # Timeout: The number of seconds before receives and sends time out.
 #
-Timeout 300
+Timeout <%= timeout %>
 
 #
 # KeepAlive: Whether or not to allow persistent connections (more than
 # one request per connection). Set to "Off" to deactivate.
 #
-KeepAlive On
+KeepAlive <%= keepalive ? 'On' : 'Off' %>
 
 #
 # MaxKeepAliveRequests: The maximum number of requests to allow
 # during a persistent connection. Set to 0 to allow an unlimited amount.
 # We recommend you leave this number high, for maximum performance.
 #
-MaxKeepAliveRequests 100
+MaxKeepAliveRequests <%= max_keepalive_requests %>
 
 #
 # KeepAliveTimeout: Number of seconds to wait for the next request from the
 # same client on the same connection.
 #
-KeepAliveTimeout 5
+KeepAliveTimeout <%= keepalive_timeout %>
 
 ##
 ## Server-Pool Size Regulation (MPM specific)
@@ -96,11 +96,11 @@ KeepAliveTimeout 5
 # MaxClients: maximum number of server processes allowed to start
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_prefork_module>
-    StartServers          5
-    MinSpareServers       5
-    MaxSpareServers      10
-    MaxClients          150
-    MaxRequestsPerChild   0
+    StartServers          <%= mpm_prefork_start_servers %>
+    MinSpareServers       <%= mpm_prefork_min_spare_servers %>
+    MaxSpareServers       <%= mpm_prefork_max_spare_servers %>
+    MaxClients            <%= mpm_prefork_max_clients %>
+    MaxRequestsPerChild   <%= mpm_prefork_max_requests_per_child %>
 </IfModule>
 
 # worker MPM
@@ -114,13 +114,13 @@ KeepAliveTimeout 5
 # MaxClients: maximum number of simultaneous client connections
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_worker_module>
-    StartServers          2
-    MinSpareThreads      25
-    MaxSpareThreads      75 
-    ThreadLimit          64
-    ThreadsPerChild      25
-    MaxClients          150
-    MaxRequestsPerChild   0
+    StartServers          <%= mpm_worker_start_servers %>
+    MinSpareThreads       <%= mpm_worker_min_spare_threads %>
+    MaxSpareThreads       <%= mpm_worker_max_spare_threads %>
+    ThreadLimit           <%= mpm_worker_thread_limit %>
+    ThreadsPerChild       <%= mpm_worker_threads_per_child %>
+    MaxClients            <%= mpm_worker_max_clients %>
+    MaxRequestsPerChild   <%= mpm_worker_max_requests_per_child %>
 </IfModule>
 
 # event MPM
@@ -131,13 +131,13 @@ KeepAliveTimeout 5
 # MaxClients: maximum number of simultaneous client connections
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_event_module>
-    StartServers          2
-    MinSpareThreads      25
-    MaxSpareThreads      75 
-    ThreadLimit          64
-    ThreadsPerChild      25
-    MaxClients          150
-    MaxRequestsPerChild   0
+    StartServers          <%= mpm_event_start_servers %>
+    MinSpareThreads       <%= mpm_event_min_spare_threads %>
+    MaxSpareThreads       <%= mpm_event_max_spare_threads %>
+    ThreadLimit           <%= mpm_event_thread_limit %>
+    ThreadsPerChild       <%= mpm_event_threads_per_child %>
+    MaxClients            <%= mpm_event_max_clients %>
+    MaxRequestsPerChild   <%= mpm_event_max_requests_per_child %>
 </IfModule>
 
 # These need to be set in /etc/apache2/envvars
@@ -150,17 +150,20 @@ Group ${APACHE_RUN_GROUP}
 # directive.
 #
 
-AccessFileName .htaccess
+AccessFileName <%= access_file %>
 
 #
-# The following lines prevent .htaccess and .htpasswd files from being 
-# viewed by Web clients. 
+# The following lines prevent various files from being viewed by Web clients. 
 #
-<Files ~ "^\.ht">
+<% if restricted_files.is_a?(Array) -%>
+<% restricted_files.each do |pattern| -%>
+<Files ~ "<%= pattern -%>">
     Order allow,deny
     Deny from all
     Satisfy all
 </Files>
+<% end -%>
+<% end -%>
 
 #
 # DefaultType is the default MIME type the server will use for a document
@@ -178,7 +181,7 @@ AccessFileName .htaccess
 # unset is suggested  instead of forcing the browser to accept
 # incorrect  metadata.
 #
-DefaultType None
+DefaultType <%= default_type %>
 
 
 #
@@ -189,7 +192,7 @@ DefaultType None
 # each client request will result in AT LEAST one lookup request to the
 # nameserver.
 #
-HostnameLookups Off
+HostnameLookups <%= hostname_lookups ? 'On' : 'Off' %>
 
 # ErrorLog: The location of the error log file.
 # If you do not specify an ErrorLog directive within a <VirtualHost>
@@ -204,7 +207,7 @@ ErrorLog ${APACHE_LOG_DIR}/error.log
 # Possible values include: debug, info, notice, warn, error, crit,
 # alert, emerg.
 #
-LogLevel warn
+LogLevel <%= log_level %>
 
 # Include module configuration:
 Include mods-enabled/*.load
@@ -218,11 +221,11 @@ Include httpd.conf
 # a CustomLog directive (see below).
 # If you are behind a reverse proxy, you might want to change %h into %{X-Forwarded-For}i
 #
-LogFormat "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
-LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
-LogFormat "%h %l %u %t \"%r\" %>s %O" common
-LogFormat "%{Referer}i -> %U" referer
-LogFormat "%{User-agent}i" agent
+<% if log_formats.is_a?(Array) -%>
+<% log_formats.each do |format, log_type| -%>
+LogFormat "<%= format -%>" <%= log_type %>
+<% end -%>
+<% end -%>
 
 # Include of directories ignores editors' and dpkg's backup files,
 # see README.Debian for details.

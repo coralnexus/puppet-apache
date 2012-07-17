@@ -1,81 +1,168 @@
 # Class: apache::params
 #
-# This class manages Apache parameters
-#
-# Parameters:
-# - The $user that Apache runs as
-# - The $group that Apache runs as
-# - The $apache_name is the name of the package and service on the relevant
-#   distribution
-# - The $php_package is the name of the package that provided PHP
-# - The $ssl_package is the name of the Apache SSL package
-# - The $apache_dev is the name of the Apache development libraries package
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
+# This class manages Apache parameters (supports Hiera if it exists)
 #
 class apache::params {
 
-  $user           = 'www-data'
-  $group          = 'www-data'
+  include apache::default
 
-  $http_port      = 80
+  #-----------------------------------------------------------------------------
+  # General configurations
 
-  $use_ssl        = false
-  $https_port     = 443
+  if $::hiera_exists {
+    $apache_ensure                      = hiera('apache_ensure', $apache::default::apache_ensure)
+    $use_dev                            = hiera('apache_use_dev', $apache::default::use_dev)
+    $apache_dev_ensure                  = hiera('apache_dev_ensure', $apache::default::apache_dev_ensure)
+    $user                               = hiera('apache_user', $apache::default::user)
+    $group                              = hiera('apache_group', $apache::default::group)
+    $locale                             = hiera('apache_locale', $apache::default::locale)
+    $web_home                           = hiera('apache_web_home', $apache::default::web_home)
+    $access_file                        = hiera('apache_access_file', $apache::default::access_file)
+    $timeout                            = hiera('apache_timeout', $apache::default::timeout)
+    $keepalive                          = hiera('apache_keepalive', $apache::default::keepalive)
+    $max_keepalive_requests             = hiera('apache_max_keepalive_requests', $apache::default::max_keepalive_requests)
+    $keepalive_timeout                  = hiera('apache_keepalive_timeout', $apache::default::keepalive_timeout)
+    $mpm_prefork_start_servers          = hiera('apache_mpm_prefork_start_servers', $apache::default::mpm_prefork_start_servers)
+    $mpm_prefork_min_spare_servers      = hiera('apache_mpm_prefork_min_spare_servers', $apache::default::mpm_prefork_min_spare_servers)
+    $mpm_prefork_max_spare_servers      = hiera('apache_mpm_prefork_max_spare_servers', $apache::default::mpm_prefork_max_spare_servers)
+    $mpm_prefork_max_clients            = hiera('apache_mpm_prefork_max_clients', $apache::default::mpm_prefork_max_clients)
+    $mpm_prefork_max_requests_per_child = hiera('apache_mpm_prefork_max_requests_per_child', $apache::default::mpm_prefork_max_requests_per_child)
+    $mpm_worker_start_servers           = hiera('apache_mpm_worker_start_servers', $apache::default::mpm_worker_start_servers)
+    $mpm_worker_min_spare_threads       = hiera('apache_mpm_worker_min_spare_threads', $apache::default::mpm_worker_min_spare_threads)
+    $mpm_worker_max_spare_threads       = hiera('apache_mpm_worker_max_spare_threads', $apache::default::mpm_worker_max_spare_threads)
+    $mpm_worker_thread_limit            = hiera('apache_mpm_worker_thread_limit', $apache::default::mpm_worker_thread_limit)
+    $mpm_worker_threads_per_child       = hiera('apache_mpm_worker_threads_per_child', $apache::default::mpm_worker_threads_per_child)
+    $mpm_worker_max_clients             = hiera('apache_mpm_worker_max_clients', $apache::default::mpm_worker_max_clients)
+    $mpm_worker_max_requests_per_child  = hiera('apache_mpm_worker_max_requests_per_child', $apache::default::mpm_worker_max_requests_per_child)
+    $mpm_event_start_servers            = hiera('apache_mpm_event_start_servers', $apache::default::mpm_event_start_servers)
+    $mpm_event_min_spare_threads        = hiera('apache_mpm_event_min_spare_threads', $apache::default::mpm_event_min_spare_threads)
+    $mpm_event_max_spare_threads        = hiera('apache_mpm_event_max_spare_threads', $apache::default::mpm_event_max_spare_threads)
+    $mpm_event_thread_limit             = hiera('apache_mpm_event_thread_limit', $apache::default::mpm_event_thread_limit)
+    $mpm_event_threads_per_child        = hiera('apache_mpm_event_threads_per_child', $apache::default::mpm_event_threads_per_child)
+    $mpm_event_max_clients              = hiera('apache_mpm_event_max_clients', $apache::default::mpm_event_max_clients)
+    $mpm_event_max_requests_per_child   = hiera('apache_mpm_event_max_requests_per_child', $apache::default::mpm_event_max_requests_per_child)
+    $ulimit_max_files                   = hiera('apache_ulimit_max_files', $apache::default::ulimit_max_files)
+    $restricted_files                   = hiera('apache_restricted_files', $apache::default::restricted_files)
+    $default_type                       = hiera('apache_default_type', $apache::default::default_type)
+    $hostname_lookups                   = hiera('apache_hostname_lookups', $apache::default::hostname_lookups)
+    $log_level                          = hiera('apache_log_level', $apache::default::log_level)
+    $log_formats                        = hiera('apache_log_formats', $apache::default::log_formats)
+    $config_template                    = hiera('apache_config_template', $apache::default::config_template)
+    $vars_template                      = hiera('apache_vars_template', $apache::default::vars_template)
+    $default_port                       = hiera('apache_default_port', $apache::default::default_port)
+    $http_port                          = hiera('apache_http_port', $apache::default::http_port)
+    $use_ssl                            = hiera('apache_use_ssl', $apache::default::use_ssl)
+    $https_port                         = hiera('apache_https_port', $apache::default::https_port)
+    $priority                           = hiera('apache_priority', $apache::default::priority)
+    $options                            = hiera('apache_options', $apache::default::options)
+    $vhost_ip                           = hiera('apache_vhost_ip', $apache::default::vhost_ip)
+    $port_template                      = hiera('apache_port_template', $apache::default::port_template)
+    $vhost_template                     = hiera('apache_vhost_template', $apache::default::vhost_template)
+    $vhost_proxy_template               = hiera('apache_vhost_proxy_template', $apache::default::vhost_proxy_template)
+    $vhost_redirect_template            = hiera('apache_vhost_redirect_template', $apache::default::vhost_redirect_template)
+  }
+  else {
+    $apache_ensure                      = $apache::default::apache_ensure
+    $use_dev                            = $apache::default::use_dev
+    $apache_dev_ensure                  = $apache::default::apache_dev_ensure
+    $user                               = $apache::default::user
+    $group                              = $apache::default::group
+    $locale                             = $apache::default::locale
+    $web_home                           = $apache::default::web_home
+    $access_file                        = $apache::default::access_file
+    $timeout                            = $apache::default::timeout
+    $keepalive                          = $apache::default::keepalive
+    $max_keepalive_requests             = $apache::default::max_keepalive_requests
+    $keepalive_timeout                  = $apache::default::keepalive_timeout
+    $mpm_prefork_start_servers          = $apache::default::mpm_prefork_start_servers
+    $mpm_prefork_min_spare_servers      = $apache::default::mpm_prefork_min_spare_servers
+    $mpm_prefork_max_spare_servers      = $apache::default::mpm_prefork_max_spare_servers
+    $mpm_prefork_max_clients            = $apache::default::mpm_prefork_max_clients
+    $mpm_prefork_max_requests_per_child = $apache::default::mpm_prefork_max_requests_per_child
+    $mpm_worker_start_servers           = $apache::default::mpm_worker_start_servers
+    $mpm_worker_min_spare_threads       = $apache::default::mpm_worker_min_spare_threads
+    $mpm_worker_max_spare_threads       = $apache::default::mpm_worker_max_spare_threads
+    $mpm_worker_thread_limit            = $apache::default::mpm_worker_thread_limit
+    $mpm_worker_threads_per_child       = $apache::default::mpm_worker_threads_per_child
+    $mpm_worker_max_clients             = $apache::default::mpm_worker_max_clients
+    $mpm_worker_max_requests_per_child  = $apache::default::mpm_worker_max_requests_per_child
+    $mpm_event_start_servers            = $apache::default::mpm_event_start_servers
+    $mpm_event_min_spare_threads        = $apache::default::mpm_event_min_spare_threads
+    $mpm_event_max_spare_threads        = $apache::default::mpm_event_max_spare_threads
+    $mpm_event_thread_limit             = $apache::default::mpm_event_thread_limit
+    $mpm_event_threads_per_child        = $apache::default::mpm_event_threads_per_child
+    $mpm_event_max_clients              = $apache::default::mpm_event_max_clients
+    $mpm_event_max_requests_per_child   = $apache::default::mpm_event_max_requests_per_child
+    $ulimit_max_files                   = $apache::default::ulimit_max_files
+    $restricted_files                   = $apache::default::restricted_files
+    $default_type                       = $apache::default::default_type
+    $hostname_lookups                   = $apache::default::hostname_lookups
+    $log_level                          = $apache::default::log_level
+    $log_formats                        = $apache::default::log_formats
+    $config_template                    = $apache::default::config_template
+    $vars_template                      = $apache::default::vars_template
+    $default_port                       = $apache::default::default_port
+    $http_port                          = $apache::default::http_port
+    $use_ssl                            = $apache::default::use_ssl
+    $https_port                         = $apache::default::https_port
+    $priority                           = $apache::default::priority
+    $options                            = $apache::default::options
+    $vhost_ip                           = $apache::default::vhost_ip
+    $port_template                      = $apache::default::port_template
+    $vhost_template                     = $apache::default::vhost_template
+    $vhost_proxy_template               = $apache::default::vhost_proxy_template
+    $vhost_redirect_template            = $apache::default::vhost_redirect_template
+  }
 
-  $http_template  = 'apache/vhost-http.conf.erb'
-  $https_template = 'apache/vhost-https.conf.erb'
-  $priority       = '25'
-
-  $options        = 'Indexes FollowSymLinks MultiViews'
-  $vhost_ip       = '*'
-
-  $web_home       = '/var/www'
+  #-----------------------------------------------------------------------------
+  # Operating System specific configurations
 
   case $::operatingsystem {
     'centos', 'redhat', 'fedora', 'scientific': {
-      $apache_name        = 'httpd'
-      $php_package        = 'php'
-      $mod_python_package = 'mod_python'
-      $mod_wsgi_package   = 'mod_wsgi'
-      $ssl_package        = 'mod_ssl'
-      $apache_dev         = 'httpd-devel'
+      $os_apache_package     = 'httpd'
+      $os_apache_dev_package = 'httpd-devel'
 
-      $apache_vdir        = '/etc/httpd/conf.d'
-      $apache_ports_dir   = $apache_vdir
-      $apache_log_dir     = '/var/log/httpd'
+      $os_mod_php_package    = 'php'
+      $os_mod_python_package = 'mod_python'
+      $os_mod_wsgi_package   = 'mod_wsgi'
+
+      $os_apache_vhost_dir   = '/etc/httpd/conf.d'
+      $os_apache_conf_dir    = $os_apache_vhost_dir
+      $os_apache_log_dir     = '/var/log/httpd'
+      $os_apache_run_dir     = '/var/run/httpd'
+      $os_apache_lock_dir    = '/var/lock/httpd'
     }
     'ubuntu', 'debian': {
-      $apache_name        = 'apache2'
-      $php_package        = 'libapache2-mod-php5'
-      $mod_python_package = 'libapache2-mod-python'
-      $mod_wsgi_package   = 'libapache2-mod-wsgi'
-      $ssl_package        = 'apache-ssl'
-      $apache_dev         = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
+      $os_apache_package     = 'apache2'
+      $os_apache_dev_package = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
 
-      $apache_etc         = '/etc/apache2'
-      $apache_vdir        = "${apache_etc}/sites-enabled"
-      $apache_config      = "${apache_etc}/apache2.conf"
-      $apache_ports_dir   = "${apache_etc}/conf.d"
-      $apache_vars        = "${apache_etc}/envvars"
-      $apache_log_dir     = '/var/log/apache2'
+      $os_mod_php_package    = 'libapache2-mod-php5'
+      $os_mod_python_package = 'libapache2-mod-python'
+      $os_mod_wsgi_package   = 'libapache2-mod-wsgi'
+
+      $os_apache_config_dir  = '/etc/apache2'
+      $os_apache_config_file = "${os_apache_config_dir}/apache2.conf"
+      $os_apache_vhost_dir   = "${os_apache_config_dir}/sites-enabled"
+      $os_apache_conf_dir    = "${os_apache_config_dir}/conf.d"
+      $os_apache_vars_file   = "${os_apache_config_dir}/envvars"
+      $os_apache_log_dir     = '/var/log/apache2'
+      $os_apache_run_dir     = '/var/run/apache2'
+      $os_apache_lock_dir    = '/var/lock/apache2'
     }
     default: {
-      $apache_name        = 'apache2'
-      $php_package        = 'libapache2-mod-php5'
-      $mod_python_package = 'libapache2-mod-python'
-      $mod_wsgi_package   = 'libapache2-mod-wsgi'
-      $ssl_package        = 'apache-ssl'
-      $apache_dev         = 'apache-dev'
+      $os_apache_package     = 'apache2'
+      $os_apache_dev_package = 'apache-dev'
 
-      $apache_etc         = '/etc/apache2'
-      $apache_vdir        = "${apache_etc}/sites-enabled"
-      $apache_ports_dir   = "${apache_etc}/conf.d"
-      $apache_log_dir     = '/var/log/apache2'
+      $os_mod_php_package    = 'libapache2-mod-php5'
+      $os_mod_python_package = 'libapache2-mod-python'
+      $os_mod_wsgi_package   = 'libapache2-mod-wsgi'
+
+      $os_apache_config_dir  = '/etc/apache2'
+      $os_apache_vhost_dir   = "${os_apache_config_dir}/sites-enabled"
+      $os_apache_conf_dir    = "${os_apache_config_dir}/conf.d"
+      $os_apache_log_dir     = '/var/log/apache2'
+      $os_apache_run_dir     = '/var/run/apache2'
+      $os_apache_lock_dir    = '/var/lock/apache2'
     }
   }
 }
