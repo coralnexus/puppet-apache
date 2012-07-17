@@ -8,7 +8,7 @@
   "apache_web_home" : "/var/www",
   "apache_access_file" : ".htaccess",
   "apache_timeout" : "300",
-  "apache_keepalive" : "true"
+  "apache_keepalive" : "true",
   "apache_max_keepalive_requests" : "100",
   "apache_keepalive_timeout" : "5",
   "apache_mpm_prefork_start_servers" : "5",
