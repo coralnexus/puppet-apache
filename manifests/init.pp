@@ -24,6 +24,7 @@ class apache (
   $use_dev                            = $apache::params::use_dev,
   $dev_ensure                         = $apache::params::apache_dev_ensure,
   $dev_package                        = $apache::params::os_apache_dev_package,
+  $modules                            = $apache::params::modules,
   $config_file                        = $apache::params::os_apache_config_file,
   $vars_file                          = $apache::params::os_apache_vars_file,
   $vhost_dir                          = $apache::params::os_apache_vhost_dir,
@@ -75,10 +76,17 @@ class apache (
     ensure => $ensure,
   }
 
-  if $use_dev {
+  if $use_dev == 'true' {
     package { 'apache_dev_package':
-      name   => $dev_package,
-      ensure => $dev_ensure,
+      name    => $dev_package,
+      ensure  => $dev_ensure,
+      require => Package['apache'],
+    }
+  }
+
+  if ! empty($modules) {
+    apache::module { $modules:
+      require => Package['apache'],
     }
   }
 

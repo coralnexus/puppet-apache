@@ -3,7 +3,6 @@
 # This class manages Apache parameters (supports Hiera if it exists)
 #
 class apache::params {
-
   include apache::default
 
   #-----------------------------------------------------------------------------
@@ -13,6 +12,10 @@ class apache::params {
     $apache_ensure                      = hiera('apache_ensure', $apache::default::apache_ensure)
     $use_dev                            = hiera('apache_use_dev', $apache::default::use_dev)
     $apache_dev_ensure                  = hiera('apache_dev_ensure', $apache::default::apache_dev_ensure)
+    $conf_ensure                        = hiera('apache_conf_ensure', $apache::default::conf_ensure)
+    $module_ensure                      = hiera('apache_module_ensure', $apache::default::module_ensure)
+    $module_lib_ensure                  = hiera('apache_module_lib_ensure', $apache::default::module_lib_ensure)
+    $modules                            = hiera_array('apache_modules', $apache::default::modules)
     $user                               = hiera('apache_user', $apache::default::user)
     $group                              = hiera('apache_group', $apache::default::group)
     $locale                             = hiera('apache_locale', $apache::default::locale)
@@ -49,13 +52,24 @@ class apache::params {
     $log_formats                        = hiera('apache_log_formats', $apache::default::log_formats)
     $config_template                    = hiera('apache_config_template', $apache::default::config_template)
     $vars_template                      = hiera('apache_vars_template', $apache::default::vars_template)
+    $server_name                        = hiera('apache_server_name', $apache::default::server_name)
+    $aliases                            = hiera('apache_aliases', $apache::default::aliases)
+    $admin_email                        = hiera('apache_admin_email', $apache::default::admin_email)
+    $doc_root                           = hiera('apache_doc_root', $apache::default::doc_root)
+    $proxy_url                          = hiera('apache_proxy_url', $apache::default::proxy_url)
+    $destination                        = hiera('apache_destination', $apache::default::destination)
+    $configure_firewall                 = hiera('apache_configure_firewall', $apache::default::configure_firewall)
     $default_port                       = hiera('apache_default_port', $apache::default::default_port)
     $http_port                          = hiera('apache_http_port', $apache::default::http_port)
     $use_ssl                            = hiera('apache_use_ssl', $apache::default::use_ssl)
+    $ssl_cert                           = hiera('apache_ssl_cert', $apache::default::ssl_cert)
+    $ssl_key                            = hiera('apache_ssl_key', $apache::default::ssl_key)
     $https_port                         = hiera('apache_https_port', $apache::default::https_port)
     $priority                           = hiera('apache_priority', $apache::default::priority)
     $options                            = hiera('apache_options', $apache::default::options)
     $vhost_ip                           = hiera('apache_vhost_ip', $apache::default::vhost_ip)
+    $error_log_level                    = hiera('apache_error_log_level', $apache::default::error_log_level)
+    $rewrite_log_level                  = hiera('apache_rewrite_log_level', $apache::default::rewrite_log_level)
     $port_template                      = hiera('apache_port_template', $apache::default::port_template)
     $vhost_template                     = hiera('apache_vhost_template', $apache::default::vhost_template)
     $vhost_proxy_template               = hiera('apache_vhost_proxy_template', $apache::default::vhost_proxy_template)
@@ -65,6 +79,10 @@ class apache::params {
     $apache_ensure                      = $apache::default::apache_ensure
     $use_dev                            = $apache::default::use_dev
     $apache_dev_ensure                  = $apache::default::apache_dev_ensure
+    $conf_ensure                        = $apache::default::conf_ensure
+    $module_ensure                      = $apache::default::module_ensure
+    $module_lib_ensure                  = $apache::default::module_lib_ensure
+    $modules                            = $apache::default::modules
     $user                               = $apache::default::user
     $group                              = $apache::default::group
     $locale                             = $apache::default::locale
@@ -101,13 +119,24 @@ class apache::params {
     $log_formats                        = $apache::default::log_formats
     $config_template                    = $apache::default::config_template
     $vars_template                      = $apache::default::vars_template
+    $server_name                        = $apache::default::server_name
+    $aliases                            = $apache::default::aliases
+    $admin_email                        = $apache::default::admin_email
+    $doc_root                           = $apache::default::doc_root
+    $proxy_url                          = $apache::default::proxy_url
+    $destination                        = $apache::default::destination
+    $configure_firewall                 = $apache::default::configure_firewall
     $default_port                       = $apache::default::default_port
     $http_port                          = $apache::default::http_port
     $use_ssl                            = $apache::default::use_ssl
+    $ssl_cert                           = $apache::default::ssl_cert
+    $ssl_key                            = $apache::default::ssl_key
     $https_port                         = $apache::default::https_port
     $priority                           = $apache::default::priority
     $options                            = $apache::default::options
     $vhost_ip                           = $apache::default::vhost_ip
+    $error_log_level                    = $apache::default::error_log_level
+    $rewrite_log_level                  = $apache::default::rewrite_log_level
     $port_template                      = $apache::default::port_template
     $vhost_template                     = $apache::default::vhost_template
     $vhost_proxy_template               = $apache::default::vhost_proxy_template

@@ -3,7 +3,7 @@ define apache::conf (
 
   $content = '',
   $source  = '',
-  $ensure  = 'present',
+  $ensure  = $apache::params::conf_ensure,
 
 ) {
 

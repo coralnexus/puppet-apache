@@ -70,7 +70,7 @@ Timeout <%= timeout %>
 # KeepAlive: Whether or not to allow persistent connections (more than
 # one request per connection). Set to "Off" to deactivate.
 #
-KeepAlive <%= keepalive ? 'On' : 'Off' %>
+KeepAlive <%= keepalive == 'true' ? 'On' : 'Off' %>
 
 #
 # MaxKeepAliveRequests: The maximum number of requests to allow
@@ -192,7 +192,7 @@ DefaultType <%= default_type %>
 # each client request will result in AT LEAST one lookup request to the
 # nameserver.
 #
-HostnameLookups <%= hostname_lookups ? 'On' : 'Off' %>
+HostnameLookups <%= hostname_lookups == 'true' ? 'On' : 'Off' %>
 
 # ErrorLog: The location of the error log file.
 # If you do not specify an ErrorLog directive within a <VirtualHost>
@@ -221,7 +221,7 @@ Include httpd.conf
 # a CustomLog directive (see below).
 # If you are behind a reverse proxy, you might want to change %h into %{X-Forwarded-For}i
 #
-<% if log_formats.is_a?(Array) -%>
+<% if log_formats.is_a? Array -%>
 <% log_formats.each do |format, log_type| -%>
 LogFormat "<%= format -%>" <%= log_type %>
 <% end -%>

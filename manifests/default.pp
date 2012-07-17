@@ -1,15 +1,19 @@
 
 class apache::default {
   $apache_ensure                      = 'present'
-  $use_dev                            = false
+  $use_dev                            = 'false'
   $apache_dev_ensure                  = 'present'
+  $conf_ensure                        = 'present'
+  $module_ensure                      = 'present'
+  $module_lib_ensure                  = 'present'
+  $modules                            = []
   $user                               = 'www-data'
   $group                              = 'www-data'
   $locale                             = ''
   $web_home                           = '/var/www'
   $access_file                        = '.htaccess'
   $timeout                            = 300
-  $keepalive                          = true
+  $keepalive                          = 'true'
   $max_keepalive_requests             = 100
   $keepalive_timeout                  = 5
   $mpm_prefork_start_servers          = 5
@@ -34,7 +38,7 @@ class apache::default {
   $ulimit_max_files                   = 8192
   $restricted_files                   = [ '^\.ht' ]
   $default_type                       = 'None'
-  $hostname_lookups                   = false
+  $hostname_lookups                   = 'false'
   $log_level                          = 'warn'
   $log_formats                        = {
     "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" => 'vhost_combined',
@@ -45,13 +49,24 @@ class apache::default {
   }
   $config_template                    = 'apache/apache2.conf.erb'
   $vars_template                      = 'apache/envvars.erb'
+  $server_name                        = ''
+  $aliases                            = ''
+  $admin_email                        = ''
+  $doc_root                           = ''
+  $proxy_url                          = '*'
+  $destination                        = ''
+  $configure_firewall                 = 'true'
   $vhost_ip                           = '*'
   $default_port                       = 80
   $http_port                          = 80
-  $use_ssl                            = ''
+  $use_ssl                            = 'false'
+  $ssl_cert                           = ''
+  $ssl_key                            = ''
   $https_port                         = 443
   $priority                           = 25
   $options                            = 'Indexes FollowSymLinks MultiViews'
+  $error_log_level                    = ''
+  $rewrite_log_level                  = ''
   $port_template                      = 'apache/ports.conf.erb'
   $vhost_template                     = 'apache/vhost.conf.erb'
   $vhost_proxy_template               = 'apache/vhost-proxy.conf.erb'

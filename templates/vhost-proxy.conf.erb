@@ -33,7 +33,7 @@
   ProxyPass        / <%= extra['destination'] %>/
   ProxyPassReverse / <%= extra['destination'] %>/  
 
-<% if use_ssl -%>  
+<% if use_ssl == 'true' -%>  
   SSLEngine on
   SSLProxyEngine On
   SSLOptions +StrictRequire

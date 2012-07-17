@@ -1,17 +1,20 @@
 
 define apache::vhost::redirect (
 
-  $server_name         = $name,
-  $aliases             = '',
-  $destination         = '',
-  $configure_firewall  = true,
+  $server_name         = $apache::params::server_name ? {
+    ''                  => $name,
+    default             => $apache::params::server_name,
+  },
+  $aliases             = $apache::params::aliases,
+  $admin_email         = $apache::params::admin_email,
+  $destination         = $apache::params::destination,
+  $configure_firewall  = $apache::params::configure_firewall,
   $vhost_ip            = $apache::params::vhost_ip,
   $priority            = $apache::params::priority,
   $options             = $apache::params::options,
   $port                = $apache::params::default_port,
   $log_dir             = $apache::params::os_apache_log_dir,
-  $error_log_level     = undef,
-  $admin_email         = undef,
+  $error_log_level     = $apache::params::error_log_level,
   $port_template       = $apache::params::port_template,
   $vhost_template      = $apache::params::vhost_redirect_template,
 

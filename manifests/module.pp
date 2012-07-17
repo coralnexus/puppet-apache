@@ -2,9 +2,9 @@
 define apache::module (
 
   $module_name   = $name,
-  $module_ensure = 'present',
+  $module_ensure = $apache::params::module_ensure,
   $lib_package   = '',
-  $lib_ensure    = 'present',
+  $lib_ensure    = $apache::params::module_lib_ensure,
 
 ) {
 
