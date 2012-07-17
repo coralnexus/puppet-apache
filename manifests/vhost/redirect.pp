@@ -1,52 +1,41 @@
-# Define: apache::vhost::redirect
-#
-# This class will create a vhost that does nothing more than redirect to a
-# given location
-#
-# Parameters:
-#   $port:
-#       Which port to list on
-#   $dest:
-#       Where to redirect to
-# - $vhost_name
-#
-# Actions:
-#   Installs apache and creates a vhost
-#
-# Requires:
-#
-# Sample Usage:
-#
+
 define apache::vhost::redirect (
-    $port,
-    $dest,
-    $priority      = '10',
-    $serveraliases = '',
-    $template      = 'apache/vhost-redirect.conf.erb',
-    $vhost_name    = '*'
-  ) {
 
-  include apache
+  $server_name         = $name,
+  $aliases             = '',
+  $destination         = '',
+  $configure_firewall  = true,
+  $vhost_ip            = $apache::params::vhost_ip,
+  $priority            = $apache::params::priority,
+  $options             = $apache::params::options,
+  $port                = $apache::params::default_port,
+  $log_dir             = $apache::params::os_apache_log_dir,
+  $error_log_level     = undef,
+  $admin_email         = undef,
+  $port_template       = $apache::params::port_template,
+  $vhost_template      = $apache::params::vhost_redirect_template,
 
-  $srvname = $name
+) {
 
-  file { "${priority}-${name}":
-    path    => "${apache::params::vdir}/${priority}-${name}",
-    content => template($template),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => Package['httpd'],
-    notify  => Service['httpd'],
-  }
+  #-----------------------------------------------------------------------------
 
-  if ! defined(Firewall["0100-INPUT ACCEPT $port"]) {
-    @firewall {
-      "0100-INPUT ACCEPT $port":
-        jump  => 'ACCEPT',
-        dport => '$port',
-        proto => 'tcp'
-    }
+  apache::vhost { "${priority}-${server_name}-redirect":
+    server_name         => $server_name,
+    aliases             => $aliases,
+    doc_root            => undef,
+    configure_firewall  => $configure_firewall,
+    vhost_ip            => $vhost_ip,
+    priority            => $priority,
+    options             => $options,
+    port                => $port,
+    use_ssl             => false,
+    log_dir             => $log_dir,
+    error_log_level     => $error_log_level,
+    admin_email         => $admin_email,
+    extra               => {
+      'destination'       => $destination,
+    },
+    port_template       => $port_template,
+    vhost_template      => $vhost_template,
   }
 }
-

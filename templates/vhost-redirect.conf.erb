@@ -1,11 +1,34 @@
-NameVirtualHost <%= vhost_name %>:<%= port %>
-<VirtualHost <%= vhost_name %>:<%= port %>>
-  ServerName <%= srvname %>
-<% if serveraliases.is_a? Array %>
-<% serveraliases.each do |name| %><%= "  ServerAlias #{name}\n" %><% end %>
-<% elsif serveraliases != '' %>
-<%= "  ServerAlias #{serveraliases}" %>
-<% end %>
-  Redirect / <%= dest %>/
-</VirtualHost>
+# ************************************
+# Default template in module puppet-apache
+# Managed by Puppet
+# ************************************
 
+<VirtualHost <%= vhost_ip -%>:<%= port -%>>
+  
+  # Server information
+
+  ServerName <%= server_name %>
+<% if aliases.is_a? Array -%>
+<% aliases.each do |name| -%>
+  ServerAlias <%= name %>
+<% end -%>
+<% elsif aliases != '' -%>
+  ServerAlias <%= aliases %>
+<% end -%>
+
+<% if admin_email -%>
+  ServerAdmin <%= admin_email %>
+<% end -%>
+  ServerSignature Off
+  
+  Redirect / <%= extra['destination'] -%>/
+   
+  # Logging
+  
+  CustomLog <%= log_dir -%><%= server_name -%>.access.log combined
+    
+  # Errors - possible values include:
+  #   [ debug | info | notice | warn | error | crit | alert | emerg ]
+  LogLevel <%= error_log_level ? error_log_level : 'warn' %>
+  ErrorLog <%= log_dir -%><%= server_name -%>.error.log
+</VirtualHost>
