@@ -3,7 +3,7 @@
 # Managed by Puppet
 # ************************************
 
-<VirtualHost <%= vhost_ip -%>:<%= http_port -%>>
+<VirtualHost <%= vhost_ip -%>:<%= port -%>>
   
   # Server information
 
@@ -15,13 +15,14 @@
 <% elsif aliases != '' -%>
   ServerAlias <%= aliases %>
 <% end -%>
-  
-  DocumentRoot <%= doc_root %>
 
   <% if admin_email -%>
   # ServerAdmin <%= admin_email %>
   <% end -%>
   ServerSignature Off
+
+<% if doc_root -%>  
+  DocumentRoot <%= doc_root %>
   
   <Directory <%= doc_root -%>>
     Options <%= options %>
@@ -29,6 +30,15 @@
     Order allow,deny
     allow from all
   </Directory>
+<% end -%>
+
+<% if use_ssl -%>  
+  SSLEngine on
+  SSLOptions +StrictRequire
+
+  SSLCertificateFile <%= ssl_cert %>
+  SSLCertificateKeyFile <%= ssl_key %>
+<% end -%>
   
   # Logging
   
