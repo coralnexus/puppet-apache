@@ -26,8 +26,8 @@ define apache::vhost::proxy (
   $log_dir             = $apache::params::os_apache_log_dir,
   $error_log_level     = $apache::params::error_log_level,
   $rewrite_log_level   = $apache::params::rewrite_log_level,
-  $port_template       = $apache::params::port_template,
-  $vhost_template      = $apache::params::vhost_proxy_template,
+  $port_template       = $apache::params::os_port_template,
+  $vhost_template      = $apache::params::os_vhost_proxy_template,
 
 ) {
 

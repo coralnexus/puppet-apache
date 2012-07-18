@@ -46,8 +46,6 @@
     "%{Referer}i -> %U" : "referer",
     "%{User-agent}i" : "agent"
   },
-  "apache_config_template" : "apache/apache2.conf.erb",
-  "apache_vars_template" : "apache/envvars.erb",
   "apache_server_name" : "",
   "apache_aliases" : "",
   "apache_admin_email" : "",
@@ -65,9 +63,5 @@
   "apache_priority" : "25",
   "apache_options" : "Indexes FollowSymLinks MultiViews",
   "apache_error_log_level" : "warn",
-  "apache_rewrite_log_level" : "0",  
-  "apache_port_template" : "apache/ports.conf.erb",
-  "apache_vhost_template" : "apache/vhost.conf.erb",
-  "apache_vhost_proxy_template" : "apache/vhost-proxy.conf.erb",
-  "apache_vhost_redirect_template" : "apache/vhost-redirect.conf.erb"
+  "apache_rewrite_log_level" : "0"
 }

@@ -47,8 +47,6 @@ class apache::default {
     "%{Referer}i -> %U"                                                  => 'referer',
     "%{User-agent}i"                                                     => 'agent',
   }
-  $config_template                    = 'apache/apache2.conf.erb'
-  $vars_template                      = 'apache/envvars.erb'
   $server_name                        = ''
   $aliases                            = ''
   $admin_email                        = ''
@@ -67,8 +65,4 @@ class apache::default {
   $options                            = 'Indexes FollowSymLinks MultiViews'
   $error_log_level                    = ''
   $rewrite_log_level                  = ''
-  $port_template                      = 'apache/ports.conf.erb'
-  $vhost_template                     = 'apache/vhost.conf.erb'
-  $vhost_proxy_template               = 'apache/vhost-proxy.conf.erb'
-  $vhost_redirect_template            = 'apache/vhost-redirect.conf.erb'
 }

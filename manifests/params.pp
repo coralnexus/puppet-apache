@@ -3,6 +3,7 @@
 # This class manages Apache parameters (supports Hiera if it exists)
 #
 class apache::params {
+
   include apache::default
 
   #-----------------------------------------------------------------------------
@@ -50,8 +51,6 @@ class apache::params {
     $hostname_lookups                   = hiera('apache_hostname_lookups', $apache::default::hostname_lookups)
     $log_level                          = hiera('apache_log_level', $apache::default::log_level)
     $log_formats                        = hiera('apache_log_formats', $apache::default::log_formats)
-    $config_template                    = hiera('apache_config_template', $apache::default::config_template)
-    $vars_template                      = hiera('apache_vars_template', $apache::default::vars_template)
     $server_name                        = hiera('apache_server_name', $apache::default::server_name)
     $aliases                            = hiera('apache_aliases', $apache::default::aliases)
     $admin_email                        = hiera('apache_admin_email', $apache::default::admin_email)
@@ -70,10 +69,6 @@ class apache::params {
     $vhost_ip                           = hiera('apache_vhost_ip', $apache::default::vhost_ip)
     $error_log_level                    = hiera('apache_error_log_level', $apache::default::error_log_level)
     $rewrite_log_level                  = hiera('apache_rewrite_log_level', $apache::default::rewrite_log_level)
-    $port_template                      = hiera('apache_port_template', $apache::default::port_template)
-    $vhost_template                     = hiera('apache_vhost_template', $apache::default::vhost_template)
-    $vhost_proxy_template               = hiera('apache_vhost_proxy_template', $apache::default::vhost_proxy_template)
-    $vhost_redirect_template            = hiera('apache_vhost_redirect_template', $apache::default::vhost_redirect_template)
   }
   else {
     $apache_ensure                      = $apache::default::apache_ensure
@@ -117,8 +112,6 @@ class apache::params {
     $hostname_lookups                   = $apache::default::hostname_lookups
     $log_level                          = $apache::default::log_level
     $log_formats                        = $apache::default::log_formats
-    $config_template                    = $apache::default::config_template
-    $vars_template                      = $apache::default::vars_template
     $server_name                        = $apache::default::server_name
     $aliases                            = $apache::default::aliases
     $admin_email                        = $apache::default::admin_email
@@ -137,10 +130,6 @@ class apache::params {
     $vhost_ip                           = $apache::default::vhost_ip
     $error_log_level                    = $apache::default::error_log_level
     $rewrite_log_level                  = $apache::default::rewrite_log_level
-    $port_template                      = $apache::default::port_template
-    $vhost_template                     = $apache::default::vhost_template
-    $vhost_proxy_template               = $apache::default::vhost_proxy_template
-    $vhost_redirect_template            = $apache::default::vhost_redirect_template
   }
 
   #-----------------------------------------------------------------------------
@@ -160,38 +149,36 @@ class apache::params {
       $os_apache_log_dir     = '/var/log/httpd'
       $os_apache_run_dir     = '/var/run/httpd'
       $os_apache_lock_dir    = '/var/lock/httpd'
+
+      fail("The apache module currently needs some configuration work for ${::operatingsystem}")
     }
     'ubuntu', 'debian': {
-      $os_apache_package     = 'apache2'
-      $os_apache_dev_package = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
+      $os_apache_package          = 'apache2'
+      $os_apache_dev_package      = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
 
-      $os_mod_php_package    = 'libapache2-mod-php5'
-      $os_mod_python_package = 'libapache2-mod-python'
-      $os_mod_wsgi_package   = 'libapache2-mod-wsgi'
+      $os_mod_php_package         = 'libapache2-mod-php5'
+      $os_mod_python_package      = 'libapache2-mod-python'
+      $os_mod_wsgi_package        = 'libapache2-mod-wsgi'
 
-      $os_apache_config_dir  = '/etc/apache2'
-      $os_apache_config_file = "${os_apache_config_dir}/apache2.conf"
-      $os_apache_vhost_dir   = "${os_apache_config_dir}/sites-enabled"
-      $os_apache_conf_dir    = "${os_apache_config_dir}/conf.d"
-      $os_apache_vars_file   = "${os_apache_config_dir}/envvars"
-      $os_apache_log_dir     = '/var/log/apache2'
-      $os_apache_run_dir     = '/var/run/apache2'
-      $os_apache_lock_dir    = '/var/lock/apache2'
+      $os_apache_config_dir       = '/etc/apache2'
+      $os_apache_config_file      = "${os_apache_config_dir}/apache2.conf"
+      $os_apache_vhost_dir        = "${os_apache_config_dir}/sites-enabled"
+      $os_apache_conf_dir         = "${os_apache_config_dir}/conf.d"
+      $os_apache_vars_file        = "${os_apache_config_dir}/envvars"
+      $os_apache_log_dir          = '/var/log/apache2'
+      $os_apache_run_dir          = '/var/run/apache2'
+      $os_apache_lock_dir         = '/var/lock/apache2'
+
+      $os_config_template         = 'apache/debian.apache2.conf.erb'
+      $os_vars_template           = 'apache/debian.envvars.erb'
+
+      $os_port_template           = 'apache/ports.conf.erb'
+      $os_vhost_template          = 'apache/vhost.conf.erb'
+      $os_vhost_proxy_template    = 'apache/vhost-proxy.conf.erb'
+      $os_vhost_redirect_template = 'apache/vhost-redirect.conf.erb'
     }
     default: {
-      $os_apache_package     = 'apache2'
-      $os_apache_dev_package = 'apache-dev'
-
-      $os_mod_php_package    = 'libapache2-mod-php5'
-      $os_mod_python_package = 'libapache2-mod-python'
-      $os_mod_wsgi_package   = 'libapache2-mod-wsgi'
-
-      $os_apache_config_dir  = '/etc/apache2'
-      $os_apache_vhost_dir   = "${os_apache_config_dir}/sites-enabled"
-      $os_apache_conf_dir    = "${os_apache_config_dir}/conf.d"
-      $os_apache_log_dir     = '/var/log/apache2'
-      $os_apache_run_dir     = '/var/run/apache2'
-      $os_apache_lock_dir    = '/var/lock/apache2'
+      fail("The apache module is not currently supported on ${::operatingsystem}")
     }
   }
 }

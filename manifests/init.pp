@@ -63,8 +63,8 @@ class apache (
   $restricted_files                   = $apache::params::restricted_files,
   $default_type                       = $apache::params::default_type,
   $log_formats                        = $apache::params::log_formats,
-  $config_template                    = $apache::params::config_template,
-  $vars_template                      = $apache::params::vars_template,
+  $config_template                    = $apache::params::os_config_template,
+  $vars_template                      = $apache::params::os_vars_template,
 
 ) inherits apache::params {
 

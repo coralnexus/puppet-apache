@@ -57,8 +57,8 @@ define apache::vhost (
   $error_log_level     = $apache::params::error_log_level,
   $rewrite_log_level   = $apache::params::rewrite_log_level,
   $extra               = {},
-  $port_template       = $apache::params::port_template,
-  $vhost_template      = $apache::params::vhost_template,
+  $port_template       = $apache::params::os_port_template,
+  $vhost_template      = $apache::params::os_vhost_template,
 
 ) {
 
