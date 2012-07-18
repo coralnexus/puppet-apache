@@ -19,8 +19,10 @@
 #
 class apache (
 
-  $ensure                             = $apache::params::apache_ensure,
   $package                            = $apache::params::os_apache_package,
+  $package_ensure                     = $apache::params::apache_package_ensure,
+  $service                            = $apache::params::os_apache_service,
+  $service_ensure                     = $apache::params::apache_service_ensure,
   $use_dev                            = $apache::params::use_dev,
   $dev_ensure                         = $apache::params::apache_dev_ensure,
   $dev_package                        = $apache::params::os_apache_dev_package,
@@ -73,7 +75,7 @@ class apache (
 
   package { 'apache':
     name   => $package,
-    ensure => $ensure,
+    ensure => $package_ensure,
   }
 
   if $use_dev == 'true' {
@@ -135,8 +137,8 @@ class apache (
   # Service
 
   service { 'apache':
-    name    => $package,
-    ensure  => running,
+    name    => $service,
+    ensure  => $service_ensure,
     enable  => true,
     require => Package['apache'],
   }

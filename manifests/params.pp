@@ -10,7 +10,8 @@ class apache::params {
   # General configurations
 
   if $::hiera_exists {
-    $apache_ensure                      = hiera('apache_ensure', $apache::default::apache_ensure)
+    $apache_package_ensure              = hiera('apache_package_ensure', $apache::default::apache_package_ensure)
+    $apache_service_ensure              = hiera('apache_service_ensure', $apache::default::apache_service_ensure)
     $use_dev                            = hiera('apache_use_dev', $apache::default::use_dev)
     $apache_dev_ensure                  = hiera('apache_dev_ensure', $apache::default::apache_dev_ensure)
     $conf_ensure                        = hiera('apache_conf_ensure', $apache::default::conf_ensure)
@@ -71,7 +72,8 @@ class apache::params {
     $rewrite_log_level                  = hiera('apache_rewrite_log_level', $apache::default::rewrite_log_level)
   }
   else {
-    $apache_ensure                      = $apache::default::apache_ensure
+    $apache_package_ensure              = $apache::default::apache_package_ensure
+    $apache_service_ensure              = $apache::default::apache_service_ensure
     $use_dev                            = $apache::default::use_dev
     $apache_dev_ensure                  = $apache::default::apache_dev_ensure
     $conf_ensure                        = $apache::default::conf_ensure
@@ -154,6 +156,7 @@ class apache::params {
     }
     'ubuntu', 'debian': {
       $os_apache_package          = 'apache2'
+      $os_apache_service          = 'apache2'
       $os_apache_dev_package      = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
 
       $os_mod_php_package         = 'libapache2-mod-php5'

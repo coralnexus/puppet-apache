@@ -1,6 +1,7 @@
 
 class apache::default {
-  $apache_ensure                      = 'present'
+  $apache_package_ensure              = 'present'
+  $apache_service_ensure              = 'running'
   $use_dev                            = 'false'
   $apache_dev_ensure                  = 'present'
   $conf_ensure                        = 'present'

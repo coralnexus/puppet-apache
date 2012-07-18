@@ -1,5 +1,6 @@
 {
-  "apache_ensure" : "present",
+  "apache_package_ensure" : "present",
+  "apache_service_ensure" : "running",
   "apache_use_dev" : "true",
   "apache_dev_ensure" : "present",
   "apache_conf_ensure" : "present",
