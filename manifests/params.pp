@@ -9,7 +9,7 @@ class apache::params {
   #-----------------------------------------------------------------------------
   # General configurations
 
-  if $::hiera_exists {
+  if $::hiera_ready {
     $apache_package_ensure              = hiera('apache_package_ensure', $apache::default::apache_package_ensure)
     $apache_service_ensure              = hiera('apache_service_ensure', $apache::default::apache_service_ensure)
     $use_dev                            = hiera('apache_use_dev', $apache::default::use_dev)
