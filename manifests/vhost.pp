@@ -64,8 +64,8 @@ define apache::vhost (
 
   include apache
 
-  if $use_ssl {
-    include apache::mod::ssl
+  if $use_ssl and ! defined(Apache::Module['ssl']) {
+    apache::module { 'ssl': }
   }
 
   #-----------------------------------------------------------------------------
