@@ -1,7 +1,6 @@
 
 define apache::module (
 
-  $module_name   = $name,
   $module_ensure = $apache::params::module_ensure,
   $lib_package   = '',
   $lib_ensure    = $apache::params::module_lib_ensure,
@@ -19,7 +18,7 @@ define apache::module (
     }
   }
 
-  a2mod { $module_name:
+  a2mod { $name:
     ensure  => $module_ensure,
     require => Package['apache'],
   }

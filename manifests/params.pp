@@ -17,7 +17,7 @@ class apache::params {
     $conf_ensure                        = hiera('apache_conf_ensure', $apache::default::conf_ensure)
     $module_ensure                      = hiera('apache_module_ensure', $apache::default::module_ensure)
     $module_lib_ensure                  = hiera('apache_module_lib_ensure', $apache::default::module_lib_ensure)
-    $modules                            = hiera_array('apache_modules', $apache::default::modules)
+    $modules                            = unique(hiera_array('apache_modules', $apache::default::modules))
     $user                               = hiera('apache_user', $apache::default::user)
     $group                              = hiera('apache_group', $apache::default::group)
     $locale                             = hiera('apache_locale', $apache::default::locale)
