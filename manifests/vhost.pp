@@ -29,30 +29,25 @@
 #
 define apache::vhost (
 
-  $server_name         = $apache::params::server_name ? {
-    ''                  => $name,
-    default             => $apache::params::server_name,
-  },
   $aliases             = $apache::params::aliases,
   $admin_email         = $apache::params::admin_email,
   $doc_root            = $apache::params::doc_root ? {
     ''                  => "${apache::params::web_home}/${name}",
     default             => $apache::params::doc_root,
   },
+  $conf_dir            = $apache::params::os_apache_conf_dir,
+  $vhost_dir           = $apache::params::os_apache_vhost_dir,
   $configure_firewall  = $apache::params::configure_firewall,
   $vhost_ip            = $apache::params::vhost_ip,
   $priority            = $apache::params::priority,
   $options             = $apache::params::options,
   $port                = $apache::params::default_port,
   $use_ssl             = $apache::params::use_ssl,
-  $ssl_cert            = $apache::params::ssl_cert ? {
-    ''                  => "/etc/ssl/certs/${name}.crt",
-    default             => $apache::params::ssl_cert,
-  },
-  $ssl_key             = $apache::params::ssl_key ? {
-    ''                  => "/etc/ssl/private/${name}.key",
-    default             => $apache::params::ssl_key,
-  },
+  $ssl_cert_dir        = $apache::params::os_cert_dir,
+  $ssl_cert            = $apache::params::ssl_cert,
+  $ssl_key_dir         = $apache::params::os_key_dir,
+  $ssl_key             = $apache::params::ssl_key,
+  $ssl_group           = $apache::params::os_ssl_group,
   $log_dir             = $apache::params::os_apache_log_dir,
   $error_log_level     = $apache::params::error_log_level,
   $rewrite_log_level   = $apache::params::rewrite_log_level,
@@ -70,14 +65,35 @@ define apache::vhost (
 
   #-----------------------------------------------------------------------------
 
+  if $ssl_cert {
+    file { "${name}-ssl-cert" :
+      path    => "${ssl_cert_dir}/${name}.crt",
+      content => $ssl_cert,
+      mode    => '0644',
+      require => Apache::Module['ssl'],
+    }
+  }
+
+  if $ssl_key {
+    file { "${name}-ssl-key" :
+      path    => "${ssl_key_dir}/${name}.key",
+      content => $ssl_key,
+      mode    => '0640',
+      group   => $ssl_group,
+      require => Apache::Module['ssl'],
+    }
+  }
+
+  #---
+
   if $port {
-    file { "${apache::params::os_apache_vhost_dir}/${server_name}.conf":
+    file { "${vhost_dir}/${name}.conf":
       content => template($vhost_template),
       require => File['apache_vhost_dir'],
       notify  => Service['apache'],
     }
 
-    $port_config_file = "${apache::params::os_apache_conf_dir}/ports.${port}.conf"
+    $port_config_file = "${conf_dir}/ports.${port}.conf"
 
     if ! defined(File[$port_config_file]) {
       file { $port_config_file:

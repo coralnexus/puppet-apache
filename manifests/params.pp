@@ -172,6 +172,10 @@ class apache::params {
       $os_apache_run_dir          = '/var/run/apache2'
       $os_apache_lock_dir         = '/var/lock/apache2'
 
+      $os_cert_dir                = '/etc/ssl/certs'
+      $os_key_dir                 = '/etc/ssl/private'
+      $os_ssl_group               = 'ssl-cert'
+
       $os_config_template         = 'apache/debian.apache2.conf.erb'
       $os_vars_template           = 'apache/debian.envvars.erb'
 
