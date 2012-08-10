@@ -38,7 +38,7 @@ class apache (
   $group                              = $apache::params::group,
   $locale                             = $apache::params::locale,
   $access_file                        = $apache::params::access_file,
-  $timeout                            = $apache::params::timeout,
+  $apache_timeout                     = $apache::params::timeout,
   $keepalive                          = $apache::params::keepalive,
   $max_keepalive_requests             = $apache::params::max_keepalive_requests,
   $keepalive_timeout                  = $apache::params::keepalive_timeout,
