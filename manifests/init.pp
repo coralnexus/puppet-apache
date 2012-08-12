@@ -101,7 +101,6 @@ class apache (
     recurse => true,
     purge   => true,
     require => Package['apache'],
-    notify  => Service['apache'],
   }
 
   if $config_file {
@@ -119,7 +118,6 @@ class apache (
       path      => $conf_dir,
       ensure    => directory,
       require   => Package['apache'],
-      notify    => Service['apache'],
     }
   }
 
