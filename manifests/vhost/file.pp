@@ -1,6 +1,7 @@
 
 define apache::vhost::file (
 
+  $server_name         = $name,
   $aliases             = $apache::params::aliases,
   $admin_email         = $apache::params::admin_email,
   $doc_root            = $apache::params::doc_root ? {
@@ -34,6 +35,7 @@ define apache::vhost::file (
 
   if $http_port {
     apache::vhost { "${priority}-${name}-http":
+      server_name         => $server_name,
       aliases             => $aliases,
       doc_root            => $doc_root,
       conf_dir            => $conf_dir,
@@ -55,6 +57,7 @@ define apache::vhost::file (
 
   if $use_ssl == 'true' and $https_port and $ssl_cert and $ssl_key {
     apache::vhost { "${priority}-${name}-https":
+      server_name         => $server_name,
       aliases             => $aliases,
       doc_root            => $doc_root,
       conf_dir            => $conf_dir,

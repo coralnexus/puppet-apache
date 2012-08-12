@@ -17,7 +17,7 @@
 <% end -%>
 
   <% if admin_email -%>
-  # ServerAdmin <%= admin_email %>
+  ServerAdmin <%= admin_email %>
   <% end -%>
   ServerSignature Off
 
@@ -36,8 +36,8 @@
   SSLEngine on
   SSLOptions +StrictRequire
 
-  SSLCertificateFile <%= ssl_cert %>
-  SSLCertificateKeyFile <%= ssl_key %>
+  SSLCertificateFile <%= ssl_cert_file %>
+  SSLCertificateKeyFile <%= ssl_key_file %>
 <% end -%>
   
   # Logging

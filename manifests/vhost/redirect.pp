@@ -1,6 +1,7 @@
 
 define apache::vhost::redirect (
 
+  $server_name         = $name,
   $aliases             = $apache::params::aliases,
   $admin_email         = $apache::params::admin_email,
   $destination         = $apache::params::destination,
@@ -21,6 +22,7 @@ define apache::vhost::redirect (
   #-----------------------------------------------------------------------------
 
   apache::vhost { "${priority}-${name}-redirect":
+    server_name         => $server_name,
     aliases             => $aliases,
     doc_root            => undef,
     conf_dir            => $conf_dir,

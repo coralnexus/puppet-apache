@@ -1,6 +1,7 @@
 
 define apache::vhost::proxy (
 
+  $server_name         = $name,
   $aliases             = $apache::params::aliases,
   $admin_email         = $apache::params::admin_email,
   $proxy_url           = $apache::params::proxy_url,
@@ -29,6 +30,7 @@ define apache::vhost::proxy (
   #-----------------------------------------------------------------------------
 
   apache::vhost { "${priority}-${name}-proxy":
+    server_name         => $server_name,
     aliases             => $aliases,
     doc_root            => undef,
     configure_firewall  => $configure_firewall,

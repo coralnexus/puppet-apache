@@ -29,6 +29,7 @@
 #
 define apache::vhost (
 
+  $server_name         = $name,
   $aliases             = $apache::params::aliases,
   $admin_email         = $apache::params::admin_email,
   $doc_root            = $apache::params::doc_root ? {
@@ -57,6 +58,9 @@ define apache::vhost (
 
 ) {
 
+  $ssl_cert_file       = "${ssl_cert_dir}/${name}.crt"
+  $ssl_key_file        = "${ssl_key_dir}/${name}.key"
+
   include apache
 
   if $use_ssl and ! defined(Apache::Module['ssl']) {
@@ -67,7 +71,7 @@ define apache::vhost (
 
   if $ssl_cert {
     file { "${name}-ssl-cert" :
-      path    => "${ssl_cert_dir}/${name}.crt",
+      path    => $ssl_cert_file,
       content => $ssl_cert,
       mode    => '0644',
       require => Apache::Module['ssl'],
@@ -76,7 +80,7 @@ define apache::vhost (
 
   if $ssl_key {
     file { "${name}-ssl-key" :
-      path    => "${ssl_key_dir}/${name}.key",
+      path    => $ssl_key_file,
       content => $ssl_key,
       mode    => '0640',
       group   => $ssl_group,
