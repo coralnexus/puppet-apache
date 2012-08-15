@@ -1,6 +1,17 @@
 
-class apache::mod::python {
+class apache::mod::python (
+
+  $module_ensure = $apache::params::module_ensure,
+  $lib_packages  = [ $apache::params::mod_python_package ],
+  $lib_ensure    = $apache::params::module_lib_ensure,
+
+) {
+
+  #-----------------------------------------------------------------------------
+
   apache::module {'python':
-    lib_package => $apache::params::os_mod_python_package,
+    module_ensure => $module_ensure,
+    lib_packages  => $lib_packages,
+    lib_ensure    => $lib_ensure,
   }
 }

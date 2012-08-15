@@ -19,21 +19,23 @@
 #
 class apache (
 
-  $package                            = $apache::params::os_apache_package,
-  $package_ensure                     = $apache::params::apache_package_ensure,
-  $service                            = $apache::params::os_apache_service,
-  $service_ensure                     = $apache::params::apache_service_ensure,
+  $package                            = $apache::params::package,
+  $package_ensure                     = $apache::params::package_ensure,
+  $service                            = $apache::params::service,
+  $service_ensure                     = $apache::params::service_ensure,
   $use_dev                            = $apache::params::use_dev,
-  $dev_ensure                         = $apache::params::apache_dev_ensure,
-  $dev_package                        = $apache::params::os_apache_dev_package,
+  $dev_ensure                         = $apache::params::dev_ensure,
+  $dev_packages                       = $apache::params::dev_packages,
   $modules                            = $apache::params::modules,
-  $config_file                        = $apache::params::os_apache_config_file,
-  $vars_file                          = $apache::params::os_apache_vars_file,
-  $vhost_dir                          = $apache::params::os_apache_vhost_dir,
-  $conf_dir                           = $apache::params::os_apache_conf_dir,
-  $log_dir                            = $apache::params::os_apache_log_dir,
-  $run_dir                            = $apache::params::os_apache_run_dir,
-  $lock_dir                           = $apache::params::os_apache_lock_dir,
+  $config_file                        = $apache::params::config_file,
+  $config_template                    = $apache::params::config_template,
+  $vars_file                          = $apache::params::vars_file,
+  $vars_template                      = $apache::params::vars_template,
+  $vhost_dir                          = $apache::params::vhost_dir,
+  $conf_dir                           = $apache::params::conf_dir,
+  $log_dir                            = $apache::params::log_dir,
+  $run_dir                            = $apache::params::run_dir,
+  $lock_dir                           = $apache::params::lock_dir,
   $user                               = $apache::params::user,
   $group                              = $apache::params::group,
   $locale                             = $apache::params::locale,
@@ -65,8 +67,6 @@ class apache (
   $restricted_files                   = $apache::params::restricted_files,
   $default_type                       = $apache::params::default_type,
   $log_formats                        = $apache::params::log_formats,
-  $config_template                    = $apache::params::os_config_template,
-  $vars_template                      = $apache::params::os_vars_template,
 
 ) inherits apache::params {
 
@@ -79,8 +79,8 @@ class apache (
   }
 
   if $use_dev == 'true' {
-    package { 'apache_dev_package':
-      name    => $dev_package,
+    package { 'apache_dev_packages':
+      name    => $dev_packages,
       ensure  => $dev_ensure,
       require => Package['apache'],
     }

@@ -2,7 +2,7 @@
 define apache::module (
 
   $module_ensure = $apache::params::module_ensure,
-  $lib_package   = '',
+  $lib_packages  = [],
   $lib_ensure    = $apache::params::module_lib_ensure,
 
 ) {
@@ -11,8 +11,8 @@ define apache::module (
 
   #-----------------------------------------------------------------------------
 
-  if $lib_package {
-    package { $lib_package:
+  if ! empty($lib_packages) {
+    package { $lib_packages:
       ensure  => $lib_ensure,
       require => Package['apache'];
     }
