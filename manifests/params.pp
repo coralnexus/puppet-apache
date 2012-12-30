@@ -22,6 +22,7 @@ class apache::params inherits apache::default {
   $config_template                    = module_param('config_template')
   $port_template                      = module_param('port_template')
   $vhost_dir                          = module_param('vhost_dir')
+  $vhost_enable_dir                   = module_param('vhost_enable_dir')
   $conf_dir                           = module_param('conf_dir')
   $vars_file                          = module_param('vars_file')
   $vars_template                      = module_param('vars_template')
@@ -84,8 +85,6 @@ class apache::params inherits apache::default {
   $vhost_template                     = module_param('vhost_template')
   $vhost_proxy_template               = module_param('vhost_proxy_template')
   $vhost_redirect_template            = module_param('vhost_redirect_template')
-
-  $site_enable_command                = module_param('site_enable_command')
 
   $server_name                        = module_param('server_name')
   $aliases                            = module_param('aliases')

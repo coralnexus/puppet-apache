@@ -41,7 +41,6 @@ define apache::vhost (
   $configure_firewall  = $apache::params::configure_firewall,
   $port_template       = $apache::params::port_template,
   $vhost_template      = $apache::params::vhost_template,
-  $site_enable_command = $apache::params::site_enable_command,
   $vhost_ip            = $apache::params::vhost_ip,
   $priority            = $apache::params::priority,
   $options             = $apache::params::options,
@@ -98,13 +97,9 @@ define apache::vhost (
       notify  => Service['apache'],
     }
 
-    if $site_enable_command {
-      exec { "enable-${name}":
-        path    => [ '/sbin', '/usr/sbin', '/usr/local/sbin' ],
-        command => "${site_enable_command} ${name}.conf",
-        require => File["${vhost_dir}/${name}.conf"],
-        notify  => Service['apache'],
-      }
+    a2site { "${name}.conf":
+      ensure  => 'present',
+      require => File["${vhost_dir}/${name}.conf"],
     }
 
     $port_config_file = "${conf_dir}/ports.${port}.conf"

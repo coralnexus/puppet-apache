@@ -32,6 +32,7 @@ class apache (
   $vars_file                          = $apache::params::vars_file,
   $vars_template                      = $apache::params::vars_template,
   $vhost_dir                          = $apache::params::vhost_dir,
+  $vhost_enable_dir                   = $apache::params::vhost_enable_dir,
   $conf_dir                           = $apache::params::conf_dir,
   $log_dir                            = $apache::params::log_dir,
   $run_dir                            = $apache::params::run_dir,
@@ -101,6 +102,16 @@ class apache (
     recurse => true,
     purge   => true,
     require => Package['apache'],
+  }
+
+  if $vhost_enable_dir {
+    file { 'apache_vhost_enable_dir':
+      path    => $vhost_enable_dir,
+      ensure  => directory,
+      recurse => true,
+      purge   => true,
+      require => Package['apache'],
+    }
   }
 
   if $config_file {
