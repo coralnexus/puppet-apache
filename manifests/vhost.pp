@@ -41,6 +41,7 @@ define apache::vhost (
   $configure_firewall  = $apache::params::configure_firewall,
   $port_template       = $apache::params::port_template,
   $vhost_template      = $apache::params::vhost_template,
+  $site_enable_command = $apache::params::site_enable_command,
   $vhost_ip            = $apache::params::vhost_ip,
   $priority            = $apache::params::priority,
   $options             = $apache::params::options,
@@ -73,7 +74,7 @@ define apache::vhost (
     file { "${name}-ssl-cert" :
       path    => $ssl_cert_file,
       content => $ssl_cert,
-      mode    => '0644',
+      mode    => 0644,
       require => Apache::Module['ssl'],
     }
   }
@@ -82,7 +83,7 @@ define apache::vhost (
     file { "${name}-ssl-key" :
       path    => $ssl_key_file,
       content => $ssl_key,
-      mode    => '0640',
+      mode    => 0640,
       group   => $ssl_group,
       require => Apache::Module['ssl'],
     }
@@ -95,6 +96,15 @@ define apache::vhost (
       content => template($vhost_template),
       require => File['apache_vhost_dir'],
       notify  => Service['apache'],
+    }
+
+    if $site_enable_command {
+      exec { "enable-${name}":
+        path    => [ '/sbin', '/usr/sbin', '/usr/local/sbin' ],
+        command => "${site_enable_command} ${name}.conf",
+        require => File["${vhost_dir}/${name}.conf"],
+        notify  => Service['apache'],
+      }
     }
 
     $port_config_file = "${conf_dir}/ports.${port}.conf"

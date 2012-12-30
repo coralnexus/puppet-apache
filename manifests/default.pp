@@ -108,12 +108,14 @@ class apache::default {
 
       $config_dir              = '/etc/apache2'
       $config_file             = "${config_dir}/apache2.conf"
-      $vhost_dir               = "${config_dir}/sites-enabled"
+      $vhost_dir               = "${config_dir}/sites-available"
       $conf_dir                = "${config_dir}/conf.d"
       $vars_file               = "${config_dir}/envvars"
       $log_dir                 = '/var/log/apache2'
       $run_dir                 = '/var/run/apache2'
       $lock_dir                = '/var/lock/apache2'
+
+      $site_enable_command     = 'a2ensite'
 
       $ssl_cert_dir            = '/etc/ssl/certs'
       $ssl_key_dir             = '/etc/ssl/private'

@@ -85,6 +85,8 @@ class apache::params inherits apache::default {
   $vhost_proxy_template               = module_param('vhost_proxy_template')
   $vhost_redirect_template            = module_param('vhost_redirect_template')
 
+  $site_enable_command                = module_param('site_enable_command')
+
   $server_name                        = module_param('server_name')
   $aliases                            = module_param('aliases')
   $admin_email                        = module_param('admin_email')
