@@ -16,12 +16,12 @@
   ServerAlias <%= aliases %>
 <% end -%>
 
-  <% if admin_email -%>
+  <% unless admin_email.empty? -%>
   ServerAdmin <%= admin_email %>
   <% end -%>
   ServerSignature Off
 
-<% if doc_root -%>  
+<% unless doc_root.empty? -%>  
   DocumentRoot <%= doc_root %>
   
   <Directory <%= doc_root -%>>
