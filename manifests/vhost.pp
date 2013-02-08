@@ -54,7 +54,7 @@ define apache::vhost (
   $log_dir             = $apache::params::log_dir,
   $error_log_level     = $apache::params::error_log_level,
   $rewrite_log_level   = $apache::params::rewrite_log_level,
-  $extra               = {},
+  $extra               = {}
 
 ) {
 
