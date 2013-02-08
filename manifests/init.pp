@@ -99,8 +99,6 @@ class apache (
   file { 'apache_vhost_dir':
     path    => $vhost_dir,
     ensure  => directory,
-    recurse => true,
-    purge   => true,
     require => Package['apache'],
   }
 
@@ -108,8 +106,6 @@ class apache (
     file { 'apache_vhost_enable_dir':
       path    => $vhost_enable_dir,
       ensure  => directory,
-      recurse => true,
-      purge   => true,
       require => Package['apache'],
     }
   }
@@ -149,6 +145,6 @@ class apache (
     name    => $service,
     ensure  => $service_ensure,
     enable  => true,
-    require => Package['apache'],
+    require => [ File['apache_config_file'], File['apache_vars_file'] ],
   }
 }
