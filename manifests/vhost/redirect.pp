@@ -32,7 +32,7 @@ define apache::vhost::redirect (
     priority            => $priority,
     options             => $options,
     port                => $port,
-    use_ssl             => 'false',
+    use_ssl             => false,
     log_dir             => $log_dir,
     error_log_level     => $error_log_level,
     admin_email         => $admin_email,

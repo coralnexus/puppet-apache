@@ -3,7 +3,7 @@ class apache::default {
 
   $package_ensure                     = 'present'
   $service_ensure                     = 'running'
-  $use_dev                            = 'false'
+  $use_dev                            = false
   $dev_ensure                         = 'present'
   $conf_ensure                        = 'present'
   $module_ensure                      = 'present'
@@ -18,7 +18,7 @@ class apache::default {
   $access_file                        = '.htaccess'
 
   $timeout                            = 300
-  $keepalive                          = 'true'
+  $keepalive                          = true
   $max_keepalive_requests             = 100
   $keepalive_timeout                  = 5
 
@@ -49,7 +49,7 @@ class apache::default {
 
   $default_type                       = 'None'
 
-  $hostname_lookups                   = 'false'
+  $hostname_lookups                   = false
 
   $log_level                          = 'warn'
   $log_formats                        = {
@@ -66,10 +66,10 @@ class apache::default {
   $doc_root                           = ''
   $proxy_url                          = '*'
   $destination                        = ''
-  $configure_firewall                 = 'true'
+  $configure_firewall                 = true
   $vhost_ip                           = '*'
   $http_port                          = 80
-  $use_ssl                            = 'false'
+  $use_ssl                            = false
   $ssl_cert                           = ''
   $ssl_key                            = ''
   $https_port                         = 443

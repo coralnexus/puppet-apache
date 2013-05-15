@@ -44,7 +44,7 @@ define apache::vhost::file (
       priority            => $priority,
       options             => $options,
       port                => $http_port,
-      use_ssl             => 'false',
+      use_ssl             => false,
       log_dir             => $log_dir,
       error_log_level     => $error_log_level,
       rewrite_log_level   => $rewrite_log_level,
@@ -54,7 +54,7 @@ define apache::vhost::file (
     }
   }
 
-  if $use_ssl == 'true' and $https_port and $ssl_cert and $ssl_key {
+  if $use_ssl and $https_port and $ssl_cert and $ssl_key {
     apache::vhost { "${priority}-${name}-https":
       server_name         => $server_name,
       aliases             => $aliases,
@@ -66,7 +66,7 @@ define apache::vhost::file (
       priority            => $priority,
       options             => $options,
       port                => $https_port,
-      use_ssl             => 'true',
+      use_ssl             => true,
       ssl_cert_dir        => $ssl_cert_dir,
       ssl_cert            => $ssl_cert,
       ssl_key_dir         => $ssl_key_dir,

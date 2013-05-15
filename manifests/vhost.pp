@@ -112,7 +112,7 @@ define apache::vhost (
       }
     }
 
-    if $configure_firewall == 'true' {
+    if $configure_firewall {
       $firewall_description = "0500 INPUT Accept Apache connection: $port"
 
       if ! defined(Firewall[$firewall_description]) {

@@ -79,7 +79,7 @@ class apache (
     ensure => $package_ensure,
   }
 
-  if $use_dev == 'true' {
+  if $use_dev {
     package { 'apache_dev_packages':
       name    => $dev_packages,
       ensure  => $dev_ensure,
