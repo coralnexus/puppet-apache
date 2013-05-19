@@ -3,7 +3,7 @@
 # Managed by Puppet
 # ************************************
 
-<% if use_ssl == 'true' -%>
+<% if use_ssl -%>
 <IfModule mod_ssl.c>
     NameVirtualHost *:<%= port %>
     Listen <%= port %>
