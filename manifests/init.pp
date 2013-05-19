@@ -37,6 +37,7 @@ class apache (
   $log_dir                            = $apache::params::log_dir,
   $run_dir                            = $apache::params::run_dir,
   $lock_dir                           = $apache::params::lock_dir,
+  $default_vhost_names                = $apache::params::default_vhost_names,
   $user                               = $apache::params::user,
   $group                              = $apache::params::group,
   $locale                             = $apache::params::locale,
@@ -136,6 +137,11 @@ class apache (
       require   => Package['apache'],
       notify    => Service['apache'],
     }
+  }
+
+  a2site { $default_vhost_names:
+    ensure  => 'absent',
+    require => Package['apache'],
   }
 
   #-----------------------------------------------------------------------------

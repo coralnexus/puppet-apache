@@ -36,6 +36,10 @@ class apache::params inherits apache::default {
 
   #---
 
+  $default_vhost_names                = module_array('default_vhost_names')
+
+  #---
+
   $user                               = module_param('user')
   $group                              = module_param('group')
   $ssl_group                          = module_param('ssl_group')
