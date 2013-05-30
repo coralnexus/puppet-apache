@@ -64,26 +64,26 @@ PidFile ${APACHE_PID_FILE}
 #
 # Timeout: The number of seconds before receives and sends time out.
 #
-Timeout <%= apache_timeout %>
+Timeout <%= @apache_timeout %>
 
 #
 # KeepAlive: Whether or not to allow persistent connections (more than
 # one request per connection). Set to "Off" to deactivate.
 #
-KeepAlive <%= keepalive ? 'On' : 'Off' %>
+KeepAlive <%= @keepalive ? 'On' : 'Off' %>
 
 #
 # MaxKeepAliveRequests: The maximum number of requests to allow
 # during a persistent connection. Set to 0 to allow an unlimited amount.
 # We recommend you leave this number high, for maximum performance.
 #
-MaxKeepAliveRequests <%= max_keepalive_requests %>
+MaxKeepAliveRequests <%= @max_keepalive_requests %>
 
 #
 # KeepAliveTimeout: Number of seconds to wait for the next request from the
 # same client on the same connection.
 #
-KeepAliveTimeout <%= keepalive_timeout %>
+KeepAliveTimeout <%= @keepalive_timeout %>
 
 ##
 ## Server-Pool Size Regulation (MPM specific)
@@ -96,11 +96,11 @@ KeepAliveTimeout <%= keepalive_timeout %>
 # MaxClients: maximum number of server processes allowed to start
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_prefork_module>
-    StartServers          <%= mpm_prefork_start_servers %>
-    MinSpareServers       <%= mpm_prefork_min_spare_servers %>
-    MaxSpareServers       <%= mpm_prefork_max_spare_servers %>
-    MaxClients            <%= mpm_prefork_max_clients %>
-    MaxRequestsPerChild   <%= mpm_prefork_max_requests_per_child %>
+    StartServers          <%= @mpm_prefork_start_servers %>
+    MinSpareServers       <%= @mpm_prefork_min_spare_servers %>
+    MaxSpareServers       <%= @mpm_prefork_max_spare_servers %>
+    MaxClients            <%= @mpm_prefork_max_clients %>
+    MaxRequestsPerChild   <%= @mpm_prefork_max_requests_per_child %>
 </IfModule>
 
 # worker MPM
@@ -114,13 +114,13 @@ KeepAliveTimeout <%= keepalive_timeout %>
 # MaxClients: maximum number of simultaneous client connections
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_worker_module>
-    StartServers          <%= mpm_worker_start_servers %>
-    MinSpareThreads       <%= mpm_worker_min_spare_threads %>
-    MaxSpareThreads       <%= mpm_worker_max_spare_threads %>
-    ThreadLimit           <%= mpm_worker_thread_limit %>
-    ThreadsPerChild       <%= mpm_worker_threads_per_child %>
-    MaxClients            <%= mpm_worker_max_clients %>
-    MaxRequestsPerChild   <%= mpm_worker_max_requests_per_child %>
+    StartServers          <%= @mpm_worker_start_servers %>
+    MinSpareThreads       <%= @mpm_worker_min_spare_threads %>
+    MaxSpareThreads       <%= @mpm_worker_max_spare_threads %>
+    ThreadLimit           <%= @mpm_worker_thread_limit %>
+    ThreadsPerChild       <%= @mpm_worker_threads_per_child %>
+    MaxClients            <%= @mpm_worker_max_clients %>
+    MaxRequestsPerChild   <%= @mpm_worker_max_requests_per_child %>
 </IfModule>
 
 # event MPM
@@ -131,13 +131,13 @@ KeepAliveTimeout <%= keepalive_timeout %>
 # MaxClients: maximum number of simultaneous client connections
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_event_module>
-    StartServers          <%= mpm_event_start_servers %>
-    MinSpareThreads       <%= mpm_event_min_spare_threads %>
-    MaxSpareThreads       <%= mpm_event_max_spare_threads %>
-    ThreadLimit           <%= mpm_event_thread_limit %>
-    ThreadsPerChild       <%= mpm_event_threads_per_child %>
-    MaxClients            <%= mpm_event_max_clients %>
-    MaxRequestsPerChild   <%= mpm_event_max_requests_per_child %>
+    StartServers          <%= @mpm_event_start_servers %>
+    MinSpareThreads       <%= @mpm_event_min_spare_threads %>
+    MaxSpareThreads       <%= @mpm_event_max_spare_threads %>
+    ThreadLimit           <%= @mpm_event_thread_limit %>
+    ThreadsPerChild       <%= @mpm_event_threads_per_child %>
+    MaxClients            <%= @mpm_event_max_clients %>
+    MaxRequestsPerChild   <%= @mpm_event_max_requests_per_child %>
 </IfModule>
 
 # These need to be set in /etc/apache2/envvars
@@ -150,13 +150,13 @@ Group ${APACHE_RUN_GROUP}
 # directive.
 #
 
-AccessFileName <%= access_file %>
+AccessFileName <%= @access_file %>
 
 #
 # The following lines prevent various files from being viewed by Web clients. 
 #
-<% if restricted_files.is_a?(Array) -%>
-<% restricted_files.each do |pattern| -%>
+<% if @restricted_files.is_a?(Array) -%>
+<% @restricted_files.each do |pattern| -%>
 <Files ~ "<%= pattern -%>">
     Order allow,deny
     Deny from all
@@ -181,7 +181,7 @@ AccessFileName <%= access_file %>
 # unset is suggested  instead of forcing the browser to accept
 # incorrect  metadata.
 #
-DefaultType <%= default_type %>
+DefaultType <%= @default_type %>
 
 
 #
@@ -192,7 +192,7 @@ DefaultType <%= default_type %>
 # each client request will result in AT LEAST one lookup request to the
 # nameserver.
 #
-HostnameLookups <%= hostname_lookups ? 'On' : 'Off' %>
+HostnameLookups <%= @hostname_lookups ? 'On' : 'Off' %>
 
 # ErrorLog: The location of the error log file.
 # If you do not specify an ErrorLog directive within a <VirtualHost>
@@ -207,7 +207,7 @@ ErrorLog ${APACHE_LOG_DIR}/error.log
 # Possible values include: debug, info, notice, warn, error, crit,
 # alert, emerg.
 #
-LogLevel <%= log_level %>
+LogLevel <%= @log_level %>
 
 # Include module configuration:
 Include mods-enabled/*.load
@@ -221,8 +221,8 @@ Include httpd.conf
 # a CustomLog directive (see below).
 # If you are behind a reverse proxy, you might want to change %h into %{X-Forwarded-For}i
 #
-<% if log_formats.is_a? Array -%>
-<% log_formats.each do |format, log_type| -%>
+<% if @log_formats.is_a? Array -%>
+<% @log_formats.each do |format, log_type| -%>
 LogFormat "<%= format -%>" <%= log_type %>
 <% end -%>
 <% end -%>

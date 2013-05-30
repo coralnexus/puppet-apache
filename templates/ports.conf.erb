@@ -3,17 +3,17 @@
 # Managed by Puppet
 # ************************************
 
-<% if use_ssl -%>
+<% if @use_ssl -%>
 <IfModule mod_ssl.c>
-    NameVirtualHost *:<%= port %>
-    Listen <%= port %>
+    NameVirtualHost *:<%= @port %>
+    Listen <%= @port %>
 </IfModule>
 
 <IfModule mod_gnutls.c>
-    NameVirtualHost *:<%= port %>
-    Listen <%= port %>
+    NameVirtualHost *:<%= @port %>
+    Listen <%= @port %>
 </IfModule>
 <% else -%>
-NameVirtualHost *:<%= port %>
-Listen <%= port %>
+NameVirtualHost *:<%= @port %>
+Listen <%= @port %>
 <% end -%>
