@@ -15,6 +15,10 @@ class apache::default {
   $locale                             = ''
 
   $web_home                           = '/var/www'
+  $web_home_user                      = $user
+  $web_home_group                     = $group
+  $web_home_mode                      = '0755'
+  
   $access_file                        = '.htaccess'
 
   $timeout                            = 300

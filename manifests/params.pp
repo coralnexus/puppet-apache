@@ -32,6 +32,9 @@ class apache::params inherits apache::default {
   $ssl_cert_dir                       = module_param('ssl_cert_dir')
   $ssl_key_dir                        = module_param('ssl_key_dir')
   $web_home                           = module_param('web_home')
+  $web_home_user                      = module_param('web_home_user')
+  $web_home_group                     = module_param('web_home_group')
+  $web_home_mode                      = module_param('web_home_mode')
   $access_file                        = module_param('access_file')
 
   #---

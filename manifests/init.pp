@@ -69,6 +69,10 @@ class apache (
   $restricted_files                   = $apache::params::restricted_files,
   $default_type                       = $apache::params::default_type,
   $log_formats                        = $apache::params::log_formats,
+  $web_home                           = $apache::params::web_home,
+  $web_home_user                      = $apache::params::web_home_user,
+  $web_home_group                     = $apache::params::web_home_group,
+  $web_home_mode                      = $apache::params::web_home_mode
 
 ) inherits apache::params {
 
@@ -137,6 +141,15 @@ class apache (
       require   => Package['apache'],
       notify    => Service['apache'],
     }
+  }
+  
+  file { 'apache_web_home':
+    path    => $web_home,
+    ensure  => directory,
+    owner   => $web_home_user,
+    group   => $web_home_group,
+    mode    => $web_home_mode,
+    require => Package['apache']
   }
 
   a2site { $default_vhost_names:
