@@ -1,21 +1,30 @@
+
 Puppet::Type.type(:a2site).provide(:a2site) do
-    desc "Manage Apache 2 sites on Debian and Ubuntu"
+  
+  desc "Manage Apache 2 sites on Debian and Ubuntu"
 
-    optional_commands :encmd => "a2ensite"
-    optional_commands :discmd => "a2dissite"
+  optional_commands :encmd  => "a2ensite"
+  optional_commands :discmd => "a2dissite"
 
-    defaultfor :operatingsystem => [:debian, :ubuntu]
+  defaultfor :operatingsystem => [ :debian, :ubuntu ]
+  
+  #-----------------------------------------------------------------------------
+  # Checks
 
-    def create
-        encmd resource[:name]
-    end
+  def exists?
+    File.exists?("/etc/apache2/sites-enabled/" + resource[:name].to_s)
+  end
+   
+  #-----------------------------------------------------------------------------
+  # Operations
 
-    def destroy
-        discmd resource[:name]
-    end
+  def create
+    encmd resource[:name]
+  end
+  
+  #---
 
-    def exists?
-        site= "/etc/apache2/sites-enabled/" + resource[:name]
-        File.exists?(site)
-    end
+  def destroy
+    discmd resource[:name]
+  end
 end
