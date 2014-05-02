@@ -131,7 +131,7 @@ class apache::default {
       $vhost_proxy_template    = 'apache/vhost-proxy.conf.erb'
       $vhost_redirect_template = 'apache/vhost-redirect.conf.erb'
 
-      $default_vhost_names     = [ '000-default' ]
+      $default_vhost_names     = [ '000-default.conf' ]
     }
     default: {
       fail("The apache module is not currently supported on ${::operatingsystem}")
