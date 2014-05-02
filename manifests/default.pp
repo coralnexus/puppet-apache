@@ -14,11 +14,11 @@ class apache::default {
   $group                              = 'www-data'
   $locale                             = ''
 
+  $log_mode                           = '0770'
+
   $web_home                           = '/var/www'
-  $web_home_user                      = $user
-  $web_home_group                     = $group
   $web_home_mode                      = '0755'
-  
+
   $access_file                        = '.htaccess'
 
   $timeout                            = 300

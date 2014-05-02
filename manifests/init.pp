@@ -35,6 +35,7 @@ class apache (
   $vhost_enable_dir                   = $apache::params::vhost_enable_dir,
   $conf_dir                           = $apache::params::conf_dir,
   $log_dir                            = $apache::params::log_dir,
+  $log_mode                           = $apache::params::log_mode,
   $run_dir                            = $apache::params::run_dir,
   $lock_dir                           = $apache::params::lock_dir,
   $default_vhost_names                = $apache::params::default_vhost_names,
@@ -70,8 +71,6 @@ class apache (
   $default_type                       = $apache::params::default_type,
   $log_formats                        = $apache::params::log_formats,
   $web_home                           = $apache::params::web_home,
-  $web_home_user                      = $apache::params::web_home_user,
-  $web_home_group                     = $apache::params::web_home_group,
   $web_home_mode                      = $apache::params::web_home_mode
 
 ) inherits apache::params {
@@ -104,14 +103,16 @@ class apache (
   file { 'apache_vhost_dir':
     path    => $vhost_dir,
     ensure  => directory,
-    require => Package['apache'],
+    owner   => $user,
+    group   => $group
   }
 
   if $vhost_enable_dir {
     file { 'apache_vhost_enable_dir':
       path    => $vhost_enable_dir,
       ensure  => directory,
-      require => Package['apache'],
+      owner   => $user,
+      group   => $group
     }
   }
 
@@ -119,8 +120,9 @@ class apache (
     file { 'apache_config_file':
       path    => $config_file,
       ensure  => present,
+      owner   => $user,
+      group   => $group,
       content => template($config_template),
-      require => Package['apache'],
       notify  => Service['apache'],
     }
   }
@@ -129,7 +131,8 @@ class apache (
     file { 'apache_conf_dir':
       path      => $conf_dir,
       ensure    => directory,
-      require   => Package['apache'],
+      owner     => $user,
+      group     => $group
     }
   }
 
@@ -137,19 +140,27 @@ class apache (
     file { 'apache_vars_file':
       path      => $vars_file,
       ensure    => present,
+      owner     => $user,
+      group     => $group,
       content   => template($vars_template),
-      require   => Package['apache'],
       notify    => Service['apache'],
     }
   }
-  
+
   file { 'apache_web_home':
     path    => $web_home,
     ensure  => directory,
-    owner   => $web_home_user,
-    group   => $web_home_group,
-    mode    => $web_home_mode,
-    require => Package['apache']
+    owner   => $user,
+    group   => $group,
+    mode    => $web_home_mode
+  }
+
+  file { 'apache_log_dir':
+    path    => $log_dir,
+    ensure  => directory,
+    owner   => $user,
+    group   => $group,
+    mode    => $log_mode
   }
 
   a2site { $default_vhost_names:
