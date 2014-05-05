@@ -132,7 +132,9 @@ class apache (
       path      => $conf_dir,
       ensure    => directory,
       owner     => $user,
-      group     => $group
+      group     => $group,
+      purge     => true,
+      notify    => Service['apache']
     }
   }
 
