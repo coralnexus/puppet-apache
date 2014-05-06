@@ -134,6 +134,7 @@ class apache (
       owner     => $user,
       group     => $group,
       purge     => true,
+      recurse   => true,
       notify    => Service['apache']
     }
   }
