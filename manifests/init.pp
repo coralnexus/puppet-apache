@@ -104,7 +104,8 @@ class apache (
     path    => $vhost_dir,
     ensure  => directory,
     owner   => $user,
-    group   => $group
+    group   => $group,
+    notify  => Service['apache']
   }
 
   if $vhost_enable_dir {
@@ -112,7 +113,8 @@ class apache (
       path    => $vhost_enable_dir,
       ensure  => directory,
       owner   => $user,
-      group   => $group
+      group   => $group,
+      notify  => Service['apache']
     }
   }
 
@@ -155,7 +157,8 @@ class apache (
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => $web_home_mode
+    mode    => $web_home_mode,
+    notify  => Service['apache']
   }
 
   file { 'apache_log_dir':
@@ -163,12 +166,14 @@ class apache (
     ensure  => directory,
     owner   => $user,
     group   => $group,
-    mode    => $log_mode
+    mode    => $log_mode,
+    notify  => Service['apache']
   }
 
   a2site { $default_vhost_names:
     ensure  => 'absent',
     require => Package['apache'],
+    notify  => Service['apache']
   }
 
   #-----------------------------------------------------------------------------
@@ -177,7 +182,6 @@ class apache (
   service { 'apache':
     name    => $service,
     ensure  => $service_ensure,
-    enable  => true,
-    require => [ File['apache_config_file'], File['apache_vars_file'] ],
+    enable  => true
   }
 }
