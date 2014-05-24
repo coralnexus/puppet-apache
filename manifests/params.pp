@@ -3,6 +3,9 @@ class apache::params inherits apache::default {
 
   $package                            = module_param('package')
   $package_ensure                     = module_param('package_ensure')
+
+  $init_command                       = module_param('init_command')
+
   $service                            = module_param('service')
   $service_ensure                     = module_param('service_ensure')
   $use_dev                            = module_param('use_dev')

@@ -21,6 +21,7 @@ class apache (
 
   $package                            = $apache::params::package,
   $package_ensure                     = $apache::params::package_ensure,
+  $init_command                       = $apache::params::init_command,
   $service                            = $apache::params::service,
   $service_ensure                     = $apache::params::service_ensure,
   $use_dev                            = $apache::params::use_dev,
@@ -81,6 +82,12 @@ class apache (
   package { 'apache':
     name   => $package,
     ensure => $package_ensure,
+  }
+
+  exec { 'apache_init':
+    command     => $init_command,
+    refreshonly => true,
+    subscribe   => Package['apache']
   }
 
   if $use_dev {
@@ -148,6 +155,7 @@ class apache (
       owner     => $user,
       group     => $group,
       content   => template($vars_template),
+      require   => Exec['apache_init'],
       notify    => Service['apache'],
     }
   }

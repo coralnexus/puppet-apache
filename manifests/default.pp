@@ -103,6 +103,8 @@ class apache::default {
     }
     ubuntu, debian: {
       $package                 = 'apache2'
+      $init_command            = '/usr/sbin/service apache2 stop'
+
       $service                 = 'apache2'
       $dev_packages            = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
 
