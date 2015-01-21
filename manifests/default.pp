@@ -79,8 +79,8 @@ class apache::default {
   $https_port                         = 443
   $priority                           = 25
   $options                            = 'Indexes FollowSymLinks MultiViews'
-  $error_log_level                    = ''
-  $rewrite_log_level                  = ''
+  $error_log_level                    = 'warn'
+  $rewrite_log_level                  = '1'
 
   #---
 
