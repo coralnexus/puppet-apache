@@ -4,7 +4,7 @@
 # ************************************
 
 <VirtualHost <%= @vhost_ip -%>:<%= @port -%>>
-  
+
   # Server information
 
   ServerName <%= @server_name %>
@@ -20,20 +20,20 @@
   ServerAdmin <%= @admin_email %>
 <% end -%>
   ServerSignature Off
-  
+
   ProxyRequests Off
-  ProxyPreserveHost On 
-  
+  ProxyPreserveHost On
+
   <Proxy <%= @extra['proxy_url'] -%>>
     Options <%= @options %>
     Order deny,allow
     Allow from all
-  </Directory>
-  
-  ProxyPass        / <%= @extra['destination'] %>/
-  ProxyPassReverse / <%= @extra['destination'] %>/  
+  </Proxy>
 
-<% if @use_ssl -%>  
+  ProxyPass        / <%= @extra['destination'] %>/
+  ProxyPassReverse / <%= @extra['destination'] %>/
+
+<% if @use_ssl -%>
   SSLEngine on
   SSLProxyEngine On
   SSLOptions +StrictRequire
@@ -41,16 +41,16 @@
   SSLCertificateFile <%= @ssl_cert_file %>
   SSLCertificateKeyFile <%= @ssl_key_file %>
 <% end -%>
-    
+
   # Logging
-  
+
   CustomLog <%= @log_dir -%><%= @server_name -%>.access.log combined
-    
+
   # Errors - possible values include:
   #   [ debug | info | notice | warn | error | crit | alert | emerg ]
   LogLevel <%= @error_log_level ? @error_log_level : 'warn' %>
   ErrorLog <%= @log_dir -%><%= @server_name -%>.error.log
-   
+
 <% if @rewrite_log_level -%>
   # Rewrite notices = possible values [ 1 (no logging) - 8 (all actions logged) ]
   LogLevel alert rewrite:trace<%= @rewrite_log_level %>

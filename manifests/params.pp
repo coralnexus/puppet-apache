@@ -116,6 +116,6 @@ class apache::params inherits apache::default {
   $options                            = module_param('options')
   $vhost_ip                           = module_param('vhost_ip')
 
-  $error_log_level                    = module_param('error_log_level')
-  $rewrite_log_level                  = module_param('rewrite_log_level')
+  $error_log_level                    = module_param('error_log_level', 'warn')
+  $rewrite_log_level                  = module_param('rewrite_log_level', '1')
 }
