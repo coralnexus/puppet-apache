@@ -40,6 +40,10 @@
 
   SSLCertificateFile <%= @ssl_cert_file %>
   SSLCertificateKeyFile <%= @ssl_key_file %>
+
+  RequestHeader set X-Forwarded-Proto "https"
+<% else -%>
+  RequestHeader set X-Forwarded-Proto "http"
 <% end -%>
 
   # Logging
