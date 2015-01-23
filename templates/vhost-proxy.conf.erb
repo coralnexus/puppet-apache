@@ -41,6 +41,7 @@
   SSLCertificateFile <%= @ssl_cert_file %>
   SSLCertificateKeyFile <%= @ssl_key_file %>
 
+  SetEnvIf X_FORWARDED_PROTO https HTTPS=on
   RequestHeader set X-Forwarded-Proto "https"
 <% else -%>
   RequestHeader set X-Forwarded-Proto "http"
