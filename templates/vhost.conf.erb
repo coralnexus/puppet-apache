@@ -4,7 +4,7 @@
 # ************************************
 
 <VirtualHost <%= @vhost_ip -%>:<%= @port -%>>
-  
+
   # Server information
 
   ServerName <%= @server_name %>
@@ -21,9 +21,9 @@
   <% end -%>
   ServerSignature Off
 
-<% unless @doc_root.empty? -%>  
+<% unless @doc_root.empty? -%>
   DocumentRoot <%= @doc_root %>
-  
+
   <Directory <%= @doc_root -%>>
     Options <%= @options %>
     AllowOverride All
@@ -32,23 +32,34 @@
   </Directory>
 <% end -%>
 
-<% if @use_ssl -%>  
+<% if @use_ssl -%>
   SSLEngine on
   SSLOptions +StrictRequire
 
+  <% if @ssl_protocol -%>
+  SSLProtocol <%= @ssl_protocol %>
+  <% end -%>
+  <% if @ssl_cipher -%>
+  SSLCipherSuite <%= @ssl_cipher %>
+  <% end -%>
+
   SSLCertificateFile <%= @ssl_cert_file %>
   SSLCertificateKeyFile <%= @ssl_key_file %>
+
+  <% if @ssl_chain_file -%>
+  SSLCertificateChainFile <%= @ssl_chain_file %>
+  <% end -%>
 <% end -%>
-  
+
   # Logging
-  
+
   CustomLog <%= @log_dir -%>/<%= @server_name -%>.access.log combined
-    
+
   # Errors - possible values include:
   #   [ debug | info | notice | warn | error | crit | alert | emerg ]
   LogLevel <%= @error_log_level ? @error_log_level : 'warn' %>
   ErrorLog <%= @log_dir -%>/<%= @server_name -%>.error.log
-   
+
   <% if @rewrite_log_level -%>
   # Rewrite notices = possible values: [ 1 (no logging) - 8 (all actions logged) ]
   LogLevel alert rewrite:trace<%= @rewrite_log_level %>

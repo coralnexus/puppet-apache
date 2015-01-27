@@ -38,8 +38,19 @@
   SSLProxyEngine On
   SSLOptions +StrictRequire
 
+  <% if @ssl_protocol -%>
+  SSLProtocol <%= @ssl_protocol %>
+  <% end -%>
+  <% if @ssl_cipher -%>
+  SSLCipherSuite <%= @ssl_cipher %>
+  <% end -%>
+
   SSLCertificateFile <%= @ssl_cert_file %>
   SSLCertificateKeyFile <%= @ssl_key_file %>
+
+  <% if @ssl_chain_file -%>
+  SSLCertificateChainFile <%= @ssl_chain_file %>
+  <% end -%>
 
   SetEnvIf X_FORWARDED_PROTO https HTTPS=on
   RequestHeader set X-Forwarded-Proto "https"

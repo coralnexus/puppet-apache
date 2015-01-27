@@ -110,6 +110,9 @@ class apache::params inherits apache::default {
   $use_ssl                            = module_param('use_ssl')
   $ssl_cert                           = module_param('ssl_cert')
   $ssl_key                            = module_param('ssl_key')
+  $ssl_chain                          = module_param('ssl_chain')
+  $ssl_protocol                       = module_param('ssl_protocol')
+  $ssl_cipher                         = module_param('ssl_cipher')
   $https_port                         = module_param('https_port')
 
   $priority                           = module_param('priority')

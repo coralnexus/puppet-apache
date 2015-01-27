@@ -48,9 +48,12 @@ define apache::vhost (
   $use_ssl             = $apache::params::use_ssl,
   $ssl_cert_dir        = $apache::params::ssl_cert_dir,
   $ssl_cert            = $apache::params::ssl_cert,
+  $ssl_chain           = $apache::params::ssl_chain,
   $ssl_key_dir         = $apache::params::ssl_key_dir,
   $ssl_key             = $apache::params::ssl_key,
   $ssl_group           = $apache::params::ssl_group,
+  $ssl_protocol        = $apache::params::ssl_protocol,
+  $ssl_cipher          = $apache::params::ssl_cipher,
   $log_dir             = $apache::params::log_dir,
   $error_log_level     = $apache::params::error_log_level,
   $rewrite_log_level   = $apache::params::rewrite_log_level,
@@ -59,6 +62,7 @@ define apache::vhost (
 ) {
 
   $ssl_cert_file       = "${ssl_cert_dir}/${name}.crt"
+  $ssl_chain_file      = "${ssl_cert_dir}/${name}.chain.pem"
   $ssl_key_file        = "${ssl_key_dir}/${name}.key"
 
   include apache
@@ -73,6 +77,14 @@ define apache::vhost (
     file { "${name}-ssl-cert" :
       path    => $ssl_cert_file,
       content => $ssl_cert,
+      mode    => 0644,
+      require => Apache::Module['ssl'],
+    }
+  }
+  if $ssl_chain {
+    file { "${name}-ssl-chain" :
+      path    => $ssl_chain_file,
+      content => $ssl_chain,
       mode    => 0644,
       require => Apache::Module['ssl'],
     }
