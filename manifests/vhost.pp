@@ -46,7 +46,7 @@ define apache::vhost (
   $options                = $apache::params::options,
   $port                   = $apache::params::http_port,
   $use_ssl                = $apache::params::use_ssl,
-  $ssl_use_compression    = $apache::params::ssl_use_compression,
+  $ssl_compression        = $apache::params::ssl_compression,
   $ssl_honor_cipher_order = $apache::params::ssl_honor_cipher_order,
   $ssl_cert_dir           = $apache::params::ssl_cert_dir,
   $ssl_cert               = $apache::params::ssl_cert,
