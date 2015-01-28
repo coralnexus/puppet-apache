@@ -36,6 +36,8 @@
   SSLEngine on
   SSLOptions +StrictRequire
 
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+
   SSLCompression <%= @ssl_compression %>
   SSLHonorCipherOrder <%= @ssl_honor_cipher_order %>
 
