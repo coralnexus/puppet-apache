@@ -36,6 +36,9 @@
   SSLEngine on
   SSLOptions +StrictRequire
 
+  SSLCompression <%= @ssl_compression %>
+  SSLHonorCipherOrder <%= @ssl_honor_cipher_order %>
+
   <% if @ssl_protocol -%>
   SSLProtocol <%= @ssl_protocol %>
   <% end -%>
