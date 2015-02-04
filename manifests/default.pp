@@ -74,8 +74,13 @@ class apache::default {
   $vhost_ip                           = '*'
   $http_port                          = 80
   $use_ssl                            = false
+  $ssl_compression                    = 'on'
+  $ssl_honor_cipher_order             = 'on'
   $ssl_cert                           = ''
   $ssl_key                            = ''
+  $ssl_chain                          = ''
+  $ssl_protocol                       = 'all -SSLv2 -SSLv3'
+  $ssl_cipher                         = 'ECDHE-RSA-AES128-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA128:DHE-RSA-AES128-GCM-SHA384:DHE-RSA-AES128-GCM-SHA128:ECDHE-RSA-AES128-SHA384:ECDHE-RSA-AES128-SHA128:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA128:DHE-RSA-AES128-SHA128:DHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA384:AES128-GCM-SHA128:AES128-SHA128:AES128-SHA128:AES128-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4'
   $https_port                         = 443
   $priority                           = 25
   $options                            = 'Indexes FollowSymLinks MultiViews'
