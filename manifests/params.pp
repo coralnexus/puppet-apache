@@ -47,6 +47,7 @@ class apache::params inherits apache::default {
 
   $user                               = module_param('user')
   $group                              = module_param('group')
+  $extra_groups                       = module_array('extra_groups')
   $ssl_group                          = module_param('ssl_group')
   $locale                             = module_param('locale')
 

@@ -42,6 +42,7 @@ class apache (
   $default_vhost_names                = $apache::params::default_vhost_names,
   $user                               = $apache::params::user,
   $group                              = $apache::params::group,
+  $extra_groups                       = $apache::params::extra_groups,
   $locale                             = $apache::params::locale,
   $access_file                        = $apache::params::access_file,
   $apache_timeout                     = $apache::params::timeout,
@@ -186,6 +187,14 @@ class apache (
 
   #-----------------------------------------------------------------------------
   # Service
+
+  if ! defined(User[$user]) {
+    user { $user:
+      groups     => flatten([ $group, $extra_groups ]),
+      membership => minimum,
+      require    => Package['apache']
+    }
+  }
 
   service { 'apache':
     name    => $service,
