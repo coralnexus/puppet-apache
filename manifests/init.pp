@@ -35,6 +35,7 @@ class apache (
   $vhost_dir                          = $apache::params::vhost_dir,
   $vhost_enable_dir                   = $apache::params::vhost_enable_dir,
   $conf_dir                           = $apache::params::conf_dir,
+  $conf_purge                         = $apache::params::conf_purge,
   $log_dir                            = $apache::params::log_dir,
   $log_mode                           = $apache::params::log_mode,
   $run_dir                            = $apache::params::run_dir,
@@ -143,7 +144,7 @@ class apache (
       ensure    => directory,
       owner     => $user,
       group     => $group,
-      purge     => true,
+      purge     => $conf_purge,
       recurse   => true,
       notify    => Service['apache']
     }

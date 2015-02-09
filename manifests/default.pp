@@ -14,6 +14,8 @@ class apache::default {
   $group                              = 'www-data'
   $locale                             = ''
 
+  $conf_purge                         = true
+
   $log_mode                           = '0770'
 
   $web_home                           = '/var/www'

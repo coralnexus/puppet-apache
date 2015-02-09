@@ -27,6 +27,7 @@ class apache::params inherits apache::default {
   $vhost_dir                          = module_param('vhost_dir')
   $vhost_enable_dir                   = module_param('vhost_enable_dir')
   $conf_dir                           = module_param('conf_dir')
+  $conf_purge                         = module_param('conf_purge')
   $vars_file                          = module_param('vars_file')
   $vars_template                      = module_param('vars_template')
   $log_dir                            = module_param('log_dir')
