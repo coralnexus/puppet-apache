@@ -189,14 +189,6 @@ class apache (
   #-----------------------------------------------------------------------------
   # Service
 
-  if ! defined(User[$user]) {
-    user { $user:
-      groups     => flatten([ $group, $extra_groups ]),
-      membership => minimum,
-      require    => Package['apache']
-    }
-  }
-
   service { 'apache':
     name    => $service,
     ensure  => $service_ensure,
