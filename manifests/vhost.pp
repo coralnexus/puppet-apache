@@ -114,6 +114,7 @@ define apache::vhost (
     a2site { "${name}.conf":
       ensure  => 'present',
       require => File["${vhost_dir}/${name}.conf"],
+      notify  => Service['apache'],
     }
 
     $port_config_file = "${conf_dir}/ports.${port}.conf"
